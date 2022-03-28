@@ -1,2 +1,2 @@
-# scientific_management
-毕业设计
+# 毕业设计后端项目
+
