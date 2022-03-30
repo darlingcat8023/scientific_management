@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.6</version>
+		<version>2.4.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -24,62 +24,18 @@
 
 	<dependencies>
 
-		<!-- Web -->
+		<!-- webflux -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-
-		<!-- MySQL -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<!-- Validation -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-
-		<!-- Configuration -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<!-- AOP -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-
-
-		<!-- Tools -->
+		<!-- lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
 			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.madgag</groupId>
-			<artifactId>animated-gif-lib</artifactId>
-			<version>1.4</version>
-		</dependency>
-
-		<!-- Test -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 	</dependencies>
