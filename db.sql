@@ -1,14 +1,17 @@
--- 用户信息
-create table user_info (
-    id                int auto_increment comment '主键id'     primary key,
-    created_at        timestamp    default CURRENT_TIMESTAMP not null comment '创建时间',
-    updated_at        timestamp    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    deleted_at        int          default 0                 not null comment '删除标志',
-    account           varchar(50)  default ''                not null comment '账户',
-    user_name         varchar(50)  default ''                not null comment '用户名',
-    user_mobile       varchar(20)  default ''                not null comment '手机号',
-    user_password     varchar(50)  default ''                not null comment '密码',
-    is_admin          tinyint(1)   default 0                 not null comment '管理员账户   0 普通用户 1 管理员'
+-- 用户基本信息表
+create table user_account
+(
+    id            int auto_increment comment '主键id' primary key,
+    created_at    timestamp     default CURRENT_TIMESTAMP not null comment '创建时间',
+    updated_at    timestamp     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    deleted_at    int           default 0                 not null comment '删除标志',
+    account       varchar(50)   default ''                not null comment '账户',
+    user_name     varchar(50)   default ''                not null comment '用户名',
+    user_mobile   varchar(20)   default ''                not null comment '手机号',
+    user_password varchar(50)   default ''                not null comment '密码',
+    user_extend   varchar(5000) default ''                not null comment '附加信息',
+    registered    tinyint(1) default 0 not null comment '是否注册',
+    is_admin      tinyint(1) default 0 not null comment '管理员账户   0 普通用户 1 管理员'
 ) comment '用户信息表' charset = utf8;
 
 -- 用户登陆信息
@@ -25,18 +28,19 @@ create table user_login_info (
 ) comment '用户登陆信息表' charset = utf8;
 
 -- 项目信息
-create table project_info (
-    id                  int auto_increment comment '主键id'     primary key,
-    created_at          timestamp    default CURRENT_TIMESTAMP not null comment '创建时间',
-    updated_at          timestamp    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    deleted_at          int          default 0                 not null comment '删除标志',
-    project_name        varchar(100) default ''                not null comment '项目名',
-    project_type        varchar(50)  default ''                not null comment '学科分类',
-    project_final_type   varchar(50)  default ''                not null comment '最终分类',
-    research_direction  varchar(255) default ''                not null comment '研究方向',
-    project_fund        int          default 0                 not null comment '项目经费',
-    project_remark      varchar(255) default ''                not null comment '项目描述',
-    project_status      int          default 1                 not null comment '项目状态，0 审核未通过 1 审核中 2 审核通过'
+create table project_info
+(
+    id                 int auto_increment comment '主键id' primary key,
+    created_at         timestamp    default CURRENT_TIMESTAMP not null comment '创建时间',
+    updated_at         timestamp    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    deleted_at         int          default 0                 not null comment '删除标志',
+    project_name       varchar(100) default ''                not null comment '项目名',
+    project_type       varchar(50)  default ''                not null comment '学科分类',
+    project_final_type varchar(50)  default ''                not null comment '最终分类',
+    research_direction varchar(255) default ''                not null comment '研究方向',
+    project_fund       int          default 0                 not null comment '项目经费',
+    project_remark     varchar(255) default ''                not null comment '项目描述',
+    project_status     int          default 1                 not null comment '项目状态，0 审核未通过 1 审核中 2 审核通过'
 ) comment '项目信息表' charset = utf8;
 
 -- 项目参与者表
