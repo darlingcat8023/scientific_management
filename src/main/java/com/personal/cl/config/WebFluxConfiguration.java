@@ -6,7 +6,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 @EnableWebFlux
 @Configuration(proxyBeanMethods = false)
-public class SpringWebFluxConfiguration implements WebFluxConfigurer {
+public class WebFluxConfiguration implements WebFluxConfigurer {
 
 
 }
