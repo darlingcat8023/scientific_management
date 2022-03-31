@@ -27,12 +27,10 @@ public class RouterFunctionConfiguration {
     @Bean
     public RouterFunction<ServerResponse> loginRouterFunction(LoginHandler loginHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
-                .POST("/login", loginHandler::login)
-                .POST("/register", loginHandler::register)
+                .POST("/login", RequestPredicates.contentType(MediaType.APPLICATION_JSON), loginHandler::login)
+                .POST("/register", RequestPredicates.contentType(MediaType.APPLICATION_JSON), loginHandler::register)
                 .build();
-        return RouterFunctions.route()
-                .path("/api", builder -> builder.nest(RequestPredicates.contentType(MediaType.APPLICATION_JSON), supplier))
-                .build();
+        return RouterFunctions.route().path("/api", supplier).build();
     }
 
     /**
