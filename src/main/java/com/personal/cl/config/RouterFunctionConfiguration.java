@@ -35,8 +35,8 @@ public class RouterFunctionConfiguration {
     /**
      * Webflux全局异常处理器
      */
-    @Configuration
     @Order(value = -2)
+    @Configuration(proxyBeanMethods = false)
     public static class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
         public GlobalErrorWebExceptionHandler(ErrorAttributes errorAttributes, WebProperties.Resources resources, ApplicationContext applicationContext, ServerCodecConfigurer serverCodecConfigurer) {
