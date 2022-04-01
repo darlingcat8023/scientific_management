@@ -13,7 +13,8 @@ import reactor.core.publisher.Mono;
 public class LoginHandler {
 
     public Mono<ServerResponse> login(ServerRequest serverRequest) {
-        return ServerResponse.ok().bodyValue("success");
+        throw new RuntimeException("222");
+        //return ServerResponse.ok().bodyValue("success");
     }
 
     public Mono<ServerResponse> register(ServerRequest serverRequest) {

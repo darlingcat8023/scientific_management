@@ -1,5 +1,6 @@
 package com.personal.cl.config;
 
+import com.personal.cl.exception.BusinessException;
 import com.personal.cl.handler.LoginHandler;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
@@ -10,10 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.reactive.function.server.*;
+import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
 
@@ -47,7 +46,12 @@ public class RouterFunctionConfiguration {
 
         @Override
         protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
-            return null;
+            HandlerFunction<ServerResponse> function = request -> ServerResponse.status(500)
+                    .body(Mono.just(errorAttributes.getError(request))
+                            .ofType(BusinessException.class)
+                            .map(BusinessException::getMessage)
+                            .defaultIfEmpty("fail"), String.class);
+            return RouterFunctions.route(RequestPredicates.all(), function);
         }
 
     }
