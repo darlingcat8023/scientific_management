@@ -5,17 +5,27 @@ create table user_account
     created_at     timestamp     default CURRENT_TIMESTAMP not null comment '创建时间',
     updated_at     timestamp     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     deleted_at     int           default 0                 not null comment '删除标志',
-    account        varchar(50)   default 0                 not null comment '用户账户',
     user_name      varchar(50)   default ''                not null comment '用户名',
     user_mobile    varchar(20)   default ''                not null comment '手机号',
     user_password  varchar(50)   default ''                not null comment '密码',
     user_type      tinyint(1)    default 0                 not null comment '用户类型 0 学生 1教师',
     user_extend    varchar(5000) default ''                not null comment '用户附加信息',
-    is_admin       tinyint(1)    default 0                 not null comment '管理员账户   0 普通用户 1 管理员'
 ) comment '用户信息表' charset = utf8;
 
+-- 管理员用户表
+create table admin_user_account
+(
+    id             int auto_increment comment '主键id' primary key,
+    created_at     timestamp     default CURRENT_TIMESTAMP not null comment '创建时间',
+    updated_at     timestamp     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    deleted_at     int           default 0                 not null comment '删除标志',
+    account        varchar(50)   default 0                 not null comment '用户账户',
+    user_name      varchar(50)   default ''                not null comment '用户名',
+    user_password  varchar(50)   default ''                not null comment '密码'
+) comment '管理员用户表' charset = utf8;
+
 -- 初始化两个管理员
-insert into user_account (account, user_name, user_password, is_admin) values ('root1', '一级审核员', 'root1', 1),('root2', '二级审核员', 'root2', 1);
+insert into admin_user_account (account, user_name, user_password) values ('root1', '一级审核员', 'root1'),('root2', '二级审核员', 'root2');
 
 -- 用户登陆信息
 create table user_login_info (
