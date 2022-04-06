@@ -8,18 +8,34 @@ import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import org.hibernate.validator.HibernateValidator;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import java.lang.reflect.RecordComponent;
 
 @EnableWebFlux
 @Configuration(proxyBeanMethods = false)
 public class WebFluxConfiguration implements WebFluxConfigurer {
+
+    @Override
+    public Validator getValidator() {
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
+                .configure()
+                .messageInterpolator(new ParameterMessageInterpolator())
+                .addProperty( "hibernate.validator.fail_fast", "true" )
+                .buildValidatorFactory();
+        return new SpringValidatorAdapter(validatorFactory.getValidator());
+    }
 
     @Override
     public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {

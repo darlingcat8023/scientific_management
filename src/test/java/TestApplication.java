@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.personal.cl.model.User;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -49,11 +48,6 @@ public class TestApplication {
                 return super.findImplicitPropertyName(m);
             }
         };
-        mapper.setAnnotationIntrospector(implicitRecordAI);
-        User user = new User("123", 4);
-        String content = mapper.writeValueAsString(user);
-        User t = mapper.readValue(content, User.class);
-        System.out.println(content);
     }
 
 }
