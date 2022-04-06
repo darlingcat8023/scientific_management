@@ -8,10 +8,10 @@ create table user_account
     user_name      varchar(50)   default ''                not null comment '用户名',
     user_mobile    varchar(20)   default ''                not null comment '手机号',
     user_password  varchar(50)   default ''                not null comment '密码',
-    user_idNo      varchar(50)   default ''                not null comment '身份证号',
+    user_identity  varchar(50)   default ''                not null comment '身份证号',
     user_type      tinyint(1)    default 0                 not null comment '用户类型 0 学生 1教师',
     user_extend    varchar(5000) default ''                not null comment '用户附加信息',
-) comment '用户信息表' charset = utf8;
+) engine = InnoDB, comment = '用户信息表', default charset = utf8;
 
 -- 管理员用户表
 create table admin_user_account
@@ -23,7 +23,7 @@ create table admin_user_account
     account        varchar(50)   default 0                 not null comment '用户账户',
     user_name      varchar(50)   default ''                not null comment '用户名',
     user_password  varchar(50)   default ''                not null comment '密码'
-) comment '管理员用户表' charset = utf8;
+) engine = InnoDB, comment = '用户信息表', default charset = utf8;
 
 -- 初始化两个管理员
 insert into admin_user_account (account, user_name, user_password) values ('root1', '一级审核员', 'root1'),('root2', '二级审核员', 'root2');

@@ -1,18 +1,32 @@
 package com.personal.cl.dao.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("user_account")
+import java.sql.Timestamp;
+
+@Table(value = "user_account")
 public record UserAccountModel(
+
         @Id
         Integer id,
+
+        @ReadOnlyProperty
+        Timestamp createdAt,
+
+        @ReadOnlyProperty
+        Timestamp updatedAt,
+
         String userName,
+
         String userMobile,
-        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
         String userPassword,
+
+        String userIdentity,
+
         Integer userType,
+
         String userExtend
-) {
-}
+) {}

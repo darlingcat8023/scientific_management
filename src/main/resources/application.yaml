@@ -3,10 +3,12 @@ server:
 
 spring:
   r2dbc:
-    url: r2dbc:mysql://82.156.175.33:3306/bs_esign?useUnicode=true&characterEncoding=UTF-8
+    url: r2dbc:mysql://82.156.175.33:3306/scientific_statistic_dev?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: 248614740
     pool:
       enabled: true
       max-size: 20
       initial-size: 10
+      validation-query: select 1
+

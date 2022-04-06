@@ -6,6 +6,8 @@ package com.personal.cl.model;
  */
 public interface RequestVerify {
 
+    interface UserLoginVerify{}
+
     interface UserRegisterVerify{}
 
 }
