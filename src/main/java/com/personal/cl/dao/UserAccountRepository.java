@@ -9,6 +9,13 @@ import reactor.core.publisher.Mono;
 public interface UserAccountRepository extends R2dbcRepository<UserAccountModel, Integer> {
 
     /**
+     * 根据手机号查询用户
+     * @param userMobile
+     * @return
+     */
+    Mono<UserAccountModel> findUserAccountModelByUserMobile(String userMobile);
+
+    /**
      * 根据用户名和密码查询用户
      * @param userMobile
      * @param userPassword

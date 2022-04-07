@@ -22,7 +22,9 @@ public class LoginService {
     public Mono<UserLoginResponse> userLogin(Mono<UserLoginRequest> requestMono) {
         return requestMono.flatMap(request -> this.userAccountRepository.findUserAccountModelByUserMobileAndUserPassword(request.userMobile(), request.userPassword()))
                 .switchIfEmpty(Mono.error(new BusinessException("用户名或密码错误")))
-                .flatMap(model -> this.buildToken(model.userMobile(), model.userName()).map(token -> new UserLoginResponse(model.userName(), token)));
+                .flatMap(model -> this.buildToken(model.userMobile(), model.userName())
+                        .map(token -> new UserLoginResponse(model.userName(), token))
+                );
     }
 
     private Mono<String> buildToken(String userMobile, String userName) {
@@ -31,7 +33,10 @@ public class LoginService {
 
     public Mono<String> userResister(Mono<UserRegisterRequest> requestMono) {
         return requestMono.map(UserRegisterRequest::convertModel)
-                .flatMap(this.userAccountRepository::save).map(x -> "success");
+                .flatMap(model -> this.userAccountRepository.findUserAccountModelByUserMobile(model.userMobile())
+                        .flatMap(exists -> Mono.error(new BusinessException("手机号已被注册")))
+                        .switchIfEmpty(this.userAccountRepository.save(model))
+                ).map(result -> "success");
     }
 
 }
