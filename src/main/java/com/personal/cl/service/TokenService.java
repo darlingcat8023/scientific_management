@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 /**
- * @author liujiajun
+ * @author xiaowenrou
  * @date 4/7/22
  */
 @Service
 @AllArgsConstructor
 public class TokenService {
+
+    private static final String USER_TOKEN_SECRET       = "user";
+
+    private static final String ADMIN_TOKEN_SECRET      = "admin";
 
     private final TokenInfoRepository tokenInfoRepository;
 

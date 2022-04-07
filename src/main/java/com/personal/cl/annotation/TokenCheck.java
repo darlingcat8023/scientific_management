@@ -3,7 +3,7 @@ package com.personal.cl.annotation;
 import java.lang.annotation.*;
 
 /**
- * @author liujiajun
+ * @author xiaowenrou
  * @date 4/6/22
  */
 @Documented

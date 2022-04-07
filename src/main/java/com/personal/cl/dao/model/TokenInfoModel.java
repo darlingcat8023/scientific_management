@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
- * @author liujiajun
+ * @author xiaowenrou
  * @date 4/7/22
  */
 @Table(value = "token_info")

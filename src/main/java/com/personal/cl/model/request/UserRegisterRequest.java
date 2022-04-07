@@ -2,7 +2,6 @@ package com.personal.cl.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.personal.cl.dao.model.UserAccountModel;
 
 import javax.validation.constraints.NotBlank;
@@ -11,10 +10,9 @@ import javax.validation.constraints.NotNull;
 import static com.personal.cl.model.RequestVerify.UserRegisterVerify;
 
 /**
- * @author liujiajun
+ * @author xiaowenrou
  * @date 4/6/22
  */
-@JsonSerialize
 @JsonDeserialize
 public record UserRegisterRequest(
 

@@ -3,7 +3,7 @@ package com.personal.cl.model.response;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
- * @author liujiajun
+ * @author xiaowenrou
  * @date 4/7/22
  */
 @JsonSerialize

@@ -5,7 +5,7 @@ import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author liujiajun
+ * @author xiaowenrou
  * @date 4/7/22
  */
 @Repository

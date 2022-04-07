@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import static com.personal.cl.model.RequestVerify.UserLoginVerify;
 
 /**
- * @author liujiajun
+ * @author xiaowenrou
  * @date 4/7/22
  */
 @JsonDeserialize
