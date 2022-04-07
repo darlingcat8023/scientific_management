@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.RecordComponent;
+import java.util.Map;
 
 /**
  * @author liujiajun
@@ -48,6 +52,17 @@ public class TestApplication {
                 return super.findImplicitPropertyName(m);
             }
         };
+    }
+
+    @Test
+    public void tokenTest() {
+        Map<String, Object> tokenMap = Map.of("userId",1, "userName","name");
+        String token = Jwts.builder().setSubject("user")
+                .setClaims(tokenMap)
+                .signWith(SignatureAlgorithm.HS256, "user").compact();
+        System.out.println(token);
+        Claims user = Jwts.parser().setSigningKey("user").parseClaimsJws(token).getBody();
+        System.out.println(user.get("userId"));
     }
 
 }
