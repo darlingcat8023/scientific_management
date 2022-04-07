@@ -10,5 +10,4 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public record UserLoginResponse(
         String userName,
         String token
-) {
-}
+) {}

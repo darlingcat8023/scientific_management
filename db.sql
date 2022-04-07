@@ -28,16 +28,14 @@ create table admin_user_account
 -- 初始化两个管理员
 insert into admin_user_account (account, user_name, user_password) values ('root1', '一级审核员', 'root1'),('root2', '二级审核员', 'root2');
 
--- 用户登陆信息
-create table user_login_info (
+-- Token信息
+create table token_info (
     id                  int auto_increment comment '主键id'     primary key,
     created_at          timestamp    default CURRENT_TIMESTAMP not null comment '创建时间',
     updated_at          timestamp    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     deleted_at          int          default 0                 not null comment '删除标志',
-    user_id             int          default 0                 not null comment '用户id',
-    user_token          varchar(255) default ''                not null comment '用户token',
-    user_token_expires  bigint       default 0                 not null comment '用户token过期时间'
-) comment '用户登陆信息表' charset = utf8;
+    token               varchar(255) default ''                not null comment 'token'
+) engine = InnoDB, comment = 'Token信息表', default charset = utf8;
 
 -- 项目信息
 create table project_info

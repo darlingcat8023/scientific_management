@@ -19,16 +19,12 @@ public class LoginService {
 
     private final UserAccountRepository userAccountRepository;
 
+    private final TokenService tokenService;
+
     public Mono<UserLoginResponse> userLogin(Mono<UserLoginRequest> requestMono) {
         return requestMono.flatMap(request -> this.userAccountRepository.findUserAccountModelByUserMobileAndUserPassword(request.userMobile(), request.userPassword()))
                 .switchIfEmpty(Mono.error(new BusinessException("用户名或密码错误")))
-                .flatMap(model -> this.buildToken(model.userMobile(), model.userName())
-                        .map(token -> new UserLoginResponse(model.userName(), token))
-                );
-    }
-
-    private Mono<String> buildToken(String userMobile, String userName) {
-        return Mono.just("token");
+                .flatMap(model -> this.tokenService.generateToken(model).map(token -> new UserLoginResponse(model.userName(), token)));
     }
 
     public Mono<String> userResister(Mono<UserRegisterRequest> requestMono) {
