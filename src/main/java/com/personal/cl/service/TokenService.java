@@ -49,14 +49,19 @@ public class TokenService {
     }
 
     private Mono<TokenInfo> parseToken(String token, Integer admin, String secret) {
-        Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        Claims body;
+        try {
+            body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        } catch (Exception e) {
+            return Mono.error(new BusinessException("token无法解析"));
+        }
         Integer userId = body.get("userId", Integer.class);
         String userName = body.get("userName", String.class);
         Integer isAdmin = body.get("isAdmin", Integer.class);
         return this.tokenInfoRepository.queryTokenInfoModelByToken(token)
                 .switchIfEmpty(Mono.error(new BusinessException("token无效")))
                 .flatMap(model -> {
-                    if (isAdmin.equals(admin)) {
+                    if (!isAdmin.equals(admin)) {
                        return Mono.error(new BusinessException("无权限"));
                     }
                     return this.tokenInfoRepository.save(model);
