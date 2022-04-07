@@ -7,7 +7,7 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import static com.personal.cl.utils.ReactiveServerWebExchangeHolder.KEY;
+import static com.personal.cl.utils.ReactiveContextHolder.KEY_SERVER_EXCHANGE;
 
 /**
  * @author xiaowenrou
@@ -19,7 +19,7 @@ public class ServerRequestFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        return webFilterChain.filter(serverWebExchange).contextWrite(context -> context.put(KEY, serverWebExchange));
+        return webFilterChain.filter(serverWebExchange).contextWrite(context -> context.put(KEY_SERVER_EXCHANGE, serverWebExchange));
     }
 
 }

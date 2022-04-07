@@ -7,9 +7,9 @@ import reactor.core.publisher.Mono;
  * @author xiaowenrou
  * @date 4/2/22
  */
-public abstract class ReactiveServerWebExchangeHolder {
+public abstract class ReactiveContextHolder {
 
-    public static final Class<ServerWebExchange> KEY = ServerWebExchange.class;
+    public static final Class<ServerWebExchange> KEY_SERVER_EXCHANGE = ServerWebExchange.class;
 
     /**
      * 获取请求上下文
@@ -17,7 +17,7 @@ public abstract class ReactiveServerWebExchangeHolder {
      * @return
      */
     public static Mono<ServerWebExchange> getServerWebExchange() {
-        return Mono.deferContextual(contextView -> Mono.just(contextView.get(KEY)));
+        return Mono.deferContextual(contextView -> Mono.just(contextView.get(KEY_SERVER_EXCHANGE)));
     }
 
 }
