@@ -1,6 +1,7 @@
 package com.personal.cl.aspect;
 
 import com.personal.cl.annotation.TokenCheck;
+import com.personal.cl.service.TokenService;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,8 @@ public class RequestAuthConfiguration {
 
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public RequestAuthInterceptor requestAuthInterceptor(AnnotationResource<TokenCheck> resource) {
-        return new RequestAuthInterceptor(resource);
+    public RequestAuthInterceptor requestAuthInterceptor(AnnotationResource<TokenCheck> resource, TokenService tokenService) {
+        return new RequestAuthInterceptor(resource, tokenService);
     }
 
     @Bean

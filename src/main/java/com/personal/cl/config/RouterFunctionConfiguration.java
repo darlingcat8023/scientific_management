@@ -2,6 +2,7 @@ package com.personal.cl.config;
 
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.handler.LoginHandler;
+import com.personal.cl.handler.ProjectHandler;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -30,6 +31,14 @@ public class RouterFunctionConfiguration {
                 .POST("/register", RequestPredicates.contentType(MediaType.APPLICATION_JSON), loginHandler::register)
                 .build();
         return RouterFunctions.route().path("/api", supplier).build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> projectRouterFunction(ProjectHandler projectHandler) {
+        Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
+                .POST("/create", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectHandler::createProject)
+                .build();
+        return RouterFunctions.route().path("/api/project", supplier).build();
     }
 
     /**
