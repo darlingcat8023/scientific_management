@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
  * @author xiaowenrou
  * @date 4/2/22
  */
-public class ReactiveServerWebExchangeHolder {
+public abstract class ReactiveServerWebExchangeHolder {
 
     public static final Class<ServerWebExchange> KEY = ServerWebExchange.class;
 

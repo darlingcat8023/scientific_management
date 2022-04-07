@@ -10,7 +10,7 @@ import java.util.Set;
  * @author xiaowenrou
  * @date 4/6/22
  */
-public class ValidatorUtils {
+public abstract class ValidatorUtils {
 
     /**
      * 参数校验
