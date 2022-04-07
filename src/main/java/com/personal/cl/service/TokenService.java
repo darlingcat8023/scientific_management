@@ -1,8 +1,11 @@
 package com.personal.cl.service;
 
+import com.personal.cl.base.TokenInfo;
 import com.personal.cl.dao.TokenInfoRepository;
 import com.personal.cl.dao.model.TokenInfoModel;
 import com.personal.cl.dao.model.UserAccountModel;
+import com.personal.cl.exception.BusinessException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
@@ -35,6 +38,29 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
         return this.tokenInfoRepository.save(new TokenInfoModel(null, null, null, token))
                 .map(TokenInfoModel::token);
+    }
+
+    public Mono<TokenInfo> parseUserToken(String token) {
+        return this.parseToken(token, 0, USER_TOKEN_SECRET);
+    }
+
+    public Mono<TokenInfo> parseAdminToken(String token) {
+        return this.parseToken(token, 1, ADMIN_TOKEN_SECRET);
+    }
+
+    private Mono<TokenInfo> parseToken(String token, Integer admin, String secret) {
+        Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        Integer userId = body.get("userId", Integer.class);
+        String userName = body.get("userName", String.class);
+        Integer isAdmin = body.get("isAdmin", Integer.class);
+        return this.tokenInfoRepository.queryTokenInfoModelByToken(token)
+                .switchIfEmpty(Mono.error(new BusinessException("token无效")))
+                .flatMap(model -> {
+                    if (isAdmin.equals(admin)) {
+                       return Mono.error(new BusinessException("无权限"));
+                    }
+                    return this.tokenInfoRepository.save(model);
+                }).map(model -> new TokenInfo(userId, userName, isAdmin));
     }
 
 }
