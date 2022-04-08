@@ -14,7 +14,7 @@ import static com.personal.cl.model.RequestVerify.UserRegisterVerify;
  * @date 4/6/22
  */
 @JsonDeserialize
-public record UserRegisterRequest(
+public record UserRegisterRequest (
 
         @NotBlank(message = "用户名不能为空", groups = {UserRegisterVerify.class})
         String userName,

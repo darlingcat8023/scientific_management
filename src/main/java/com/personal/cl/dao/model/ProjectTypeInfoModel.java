@@ -6,8 +6,8 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
 
-@Table(value = "user_account")
-public record UserAccountModel (
+@Table(value = "project_type_info")
+public record ProjectTypeInfoModel (
 
         @Id
         Integer id,
@@ -18,15 +18,11 @@ public record UserAccountModel (
         @ReadOnlyProperty
         Timestamp updatedAt,
 
-        String userName,
+        String typeName,
 
-        String userMobile,
+        Integer createdProjects,
 
-        String userPassword,
+        Integer passedProjects,
 
-        String userIdentity,
-
-        Integer userType,
-
-        String userExtend
+        Integer rejectedProjects
 ) {}

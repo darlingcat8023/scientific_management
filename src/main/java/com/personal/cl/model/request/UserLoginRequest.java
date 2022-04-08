@@ -12,7 +12,7 @@ import static com.personal.cl.model.RequestVerify.UserLoginVerify;
  * @date 4/7/22
  */
 @JsonDeserialize
-public record UserLoginRequest(
+public record UserLoginRequest (
 
         @NotBlank(message = "手机号不能为空", groups = {UserLoginVerify.class})
         String userMobile,

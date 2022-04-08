@@ -23,7 +23,7 @@ create table admin_user_account
     account        varchar(50)   default 0                 not null comment '用户账户',
     user_name      varchar(50)   default ''                not null comment '用户名',
     user_password  varchar(50)   default ''                not null comment '密码'
-) engine = InnoDB, comment = '用户信息表', default charset = utf8;
+) engine = InnoDB, comment = '用户信息表', charset = utf8;
 
 -- 初始化两个管理员
 insert into admin_user_account (account, user_name, user_password) values ('root1', '一级审核员', 'root1'),('root2', '二级审核员', 'root2');
@@ -35,7 +35,7 @@ create table token_info (
     updated_at          timestamp    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     deleted_at          int          default 0                 not null comment '删除标志',
     token               varchar(255) default ''                not null comment 'token'
-) engine = InnoDB, comment = 'Token信息表', default charset = utf8;
+) engine = InnoDB, comment = 'Token信息表', charset = utf8;
 
 -- 项目信息
 create table project_info
@@ -97,10 +97,10 @@ create table project_type_info (
     updated_at          timestamp    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     deleted_at          int          default 0                 not null comment '删除标志',
     type_name           varchar(100) default ''                not null comment '分类名',
-    committed_projects  int          default 0                 not null comment '已创建的项目数',
+    created_projects    int          default 0                 not null comment '已创建的项目数',
     passed_projects     int          default 0                 not null comment '通过的项目数',
     rejected_projects   int          default 0                 not null comment '拒绝的项目数'
-) comment '项目分类信息表' charset = utf8;
+) engine = InnoDB, comment = '项目分类信息表', charset = utf8;
 
 insert into project_type_info (type_name) values
-(''),(''),(''),(''),(''),(''),(''),('');
+('哲学'),('经济学'),('法学'),('教育学'),('文学'),('历史学'),('理学'),('工学'),('农学'),('医学'),('军事学'),('管理学');

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * @date 4/7/22
  */
 @Table(value = "token_info")
-public record TokenInfoModel(
+public record TokenInfoModel (
 
         @Id
         Integer id,

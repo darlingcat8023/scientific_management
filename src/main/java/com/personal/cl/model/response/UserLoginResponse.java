@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @date 4/7/22
  */
 @JsonSerialize
-public record UserLoginResponse(
+public record UserLoginResponse (
         String userName,
         String token
 ) {}
