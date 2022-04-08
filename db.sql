@@ -51,7 +51,7 @@ create table project_info
     project_remark     varchar(255) default ''                not null comment '项目描述',
     project_status     int          default 1                 not null comment '项目状态，0 初始化 1 待修改 2 已拒绝 3 已通过',
     project_rejects    int          default 0                 not null comment '被打回的次数'
-) comment '项目信息表' charset = utf8;
+) engine = InnoDB, comment = '项目信息表', charset = utf8;
 
 -- 项目附件
 create table project_file

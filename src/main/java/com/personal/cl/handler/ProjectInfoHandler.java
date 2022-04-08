@@ -1,10 +1,17 @@
 package com.personal.cl.handler;
 
+import com.personal.cl.model.request.ProjectCreateRequest;
+import com.personal.cl.service.ProjectInfoService;
+import com.personal.cl.utils.ValidatorUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import javax.validation.Validator;
+
+import static com.personal.cl.model.RequestVerify.ProjectCreateVerify;
 
 /**
  * @author xiaowenrou
@@ -12,10 +19,16 @@ import reactor.core.publisher.Mono;
  */
 @Controller
 @AllArgsConstructor
-public class ProjectHandler {
+public class ProjectInfoHandler {
+
+    private final ProjectInfoService projectInfoService;
+
+    private final Validator validator;
 
     public Mono<ServerResponse> createProject(ServerRequest serverRequest) {
-        return ServerResponse.ok().bodyValue("success");
+        var requestMono = serverRequest.bodyToMono(ProjectCreateRequest.class)
+                .doOnNext(req -> ValidatorUtils.valid(this.validator, req, ProjectCreateVerify.class));
+        return ServerResponse.ok().body(this.projectInfoService.createProject(requestMono), Integer.class);
     }
 
     public Mono<ServerResponse> updateProject(ServerRequest serverRequest) {

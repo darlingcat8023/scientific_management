@@ -10,4 +10,6 @@ public interface RequestVerify {
 
     interface UserRegisterVerify{}
 
+    interface ProjectCreateVerify{}
+
 }
