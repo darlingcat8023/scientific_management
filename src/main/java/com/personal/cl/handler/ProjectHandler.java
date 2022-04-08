@@ -19,7 +19,9 @@ public class ProjectHandler {
 
     @TokenCheck
     public Mono<ServerResponse> createProject(ServerRequest serverRequest) {
-        return ServerResponse.ok().body(ReactiveContextHolder.getTokenInfo(), TokenInfo.class);
+        Mono<Object> user = ReactiveContextHolder.getServerWebExchange()
+                .map(x -> x.getAttributes().get("user"));
+        return ServerResponse.ok().body(user, TokenInfo.class);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.personal.cl.aspect;
 
 import com.personal.cl.annotation.TokenCheck;
+import com.personal.cl.base.TokenInfo;
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.service.TokenService;
 import com.personal.cl.utils.ReactiveContextHolder;
@@ -35,12 +36,13 @@ public class RequestAuthInterceptor implements MethodInterceptor {
         return ReactiveContextHolder.getServerWebExchange()
                 .flatMap(exchange -> {
                     String tokenString = this.getTokenFromRequest(exchange.getRequest());
+                    Mono<TokenInfo> tokenInfoMono;
                     if (TokenCheck.TokenType.USER.equals(check.value())) {
-                        return this.tokenService.parseUserToken(tokenString);
+                        tokenInfoMono = this.tokenService.parseUserToken(tokenString);
                     } else {
-                        return this.tokenService.parseAdminToken(tokenString);
+                        tokenInfoMono = this.tokenService.parseAdminToken(tokenString);
                     }
-                    //exchange.getAttributes().put("user", )
+                    return tokenInfoMono.doOnNext(info -> exchange.getAttributes().put("user", info));
                 }).flatMap(context -> {
                     try {
                         return (Mono<Object>) methodInvocation.proceed();
