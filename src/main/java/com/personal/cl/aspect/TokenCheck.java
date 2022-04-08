@@ -1,4 +1,4 @@
-package com.personal.cl.annotation;
+package com.personal.cl.aspect;
 
 import java.lang.annotation.*;
 

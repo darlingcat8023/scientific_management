@@ -1,6 +1,5 @@
 package com.personal.cl.aspect;
 
-import com.personal.cl.annotation.TokenCheck;
 import com.personal.cl.base.TokenInfo;
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.service.TokenService;

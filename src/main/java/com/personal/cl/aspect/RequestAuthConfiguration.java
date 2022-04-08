@@ -1,6 +1,5 @@
 package com.personal.cl.aspect;
 
-import com.personal.cl.annotation.TokenCheck;
 import com.personal.cl.service.TokenService;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;

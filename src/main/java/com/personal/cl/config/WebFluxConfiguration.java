@@ -20,7 +20,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 import javax.validation.Validation;
-import java.lang.reflect.RecordComponent;
 
 @EnableWebFlux
 @Configuration(proxyBeanMethods = false)
@@ -59,7 +58,7 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
                     if (m instanceof AnnotatedParameter parameter) {
                         return m.getDeclaringClass().getRecordComponents()[parameter.getIndex()].getName();
                     }
-                    for (RecordComponent recordComponent : m.getDeclaringClass().getRecordComponents()) {
+                    for (var recordComponent : m.getDeclaringClass().getRecordComponents()) {
                         if (recordComponent.getName().equals(m.getName())) {
                             return m.getName();
                         }

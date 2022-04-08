@@ -1,6 +1,5 @@
 package com.personal.cl.aspect;
 
-import com.personal.cl.annotation.TokenCheck;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractBeanFactoryPointcutAdvisor;
