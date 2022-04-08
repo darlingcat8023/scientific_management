@@ -50,7 +50,8 @@ create table project_info
     project_fund       int          default 0                 not null comment '项目经费',
     project_remark     varchar(255) default ''                not null comment '项目描述',
     project_status     int          default 1                 not null comment '项目状态，0 已拒绝 1 已创建 2 已提交 3 已通过',
-    project_rejects    int          default 0                 not null comment '被打回的次数'
+    project_rejects    int          default 0                 not null comment '被打回的次数',
+    creator            int          default 0                 not null comment '创建人'
 ) engine = InnoDB, comment = '项目信息表', charset = utf8;
 
 -- 项目附件

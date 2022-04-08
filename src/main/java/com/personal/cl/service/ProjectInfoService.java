@@ -31,12 +31,16 @@ public class ProjectInfoService {
         return requestMono.flatMap(request -> this.projectInfoRepository.findById(request.id())
                         .switchIfEmpty(Mono.error(new BusinessException("未查询到数据")))
                         .doOnNext(project -> {
-                            if (project.projectStatus() != 1) {
+                            if (!project.projectStatus().equals(1)) {
                                 throw new BusinessException("当前状态不允许修改");
                             }
                         }).map(request::merge)
                         .flatMap(this.projectInfoRepository::save))
                 .map(ProjectInfoModel::id);
+    }
+
+    public Mono listByCreator(Mono<> requestMono, ) {
+
     }
 
 }

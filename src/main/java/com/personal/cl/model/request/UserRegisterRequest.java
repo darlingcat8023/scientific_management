@@ -45,6 +45,7 @@ public record UserRegisterRequest (
                         this.userPassword,
                         this.userIdentity,
                         this.userType,
-                        this.userExtend);
+                        this.userExtend
+                );
         }
 }

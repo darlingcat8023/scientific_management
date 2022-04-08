@@ -30,5 +30,7 @@ public record ProjectInfoModel (
 
         Integer projectStatus,
 
-        Integer projectRejects
+        Integer projectRejects,
+
+        Integer creator
 ) {}

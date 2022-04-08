@@ -24,7 +24,7 @@ public class LoginService {
     public Mono<UserLoginResponse> userLogin(Mono<UserLoginRequest> requestMono) {
         return requestMono.flatMap(request -> this.userAccountRepository.findUserAccountModelByUserMobileAndUserPassword(request.userMobile(), request.userPassword()))
                 .switchIfEmpty(Mono.error(new BusinessException("用户名或密码错误")))
-                .flatMap(model -> this.tokenService.generateUserToken(model).map(token -> new UserLoginResponse(model.userName(), token)));
+                .flatMap(model -> this.tokenService.generateUserToken(model).map(token -> new UserLoginResponse(model.id(), model.userName(), token)));
     }
 
     public Mono<String> userResister(Mono<UserRegisterRequest> requestMono) {

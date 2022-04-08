@@ -39,7 +39,20 @@ public class ProjectInfoHandler {
         return ServerResponse.ok().body(this.projectInfoService.updateProject(requestMono), Integer.class);
     }
 
-    public Mono<ServerResponse> listProject(ServerRequest serverRequest) {
+    public Mono<ServerResponse> listProjectByCreator(ServerRequest serverRequest) {
+        
+        return ServerResponse.ok().bodyValue("success");
+    }
+
+    public Mono<ServerResponse> countProjectByCreator(ServerRequest serverRequest) {
+        return ServerResponse.ok().bodyValue("success");
+    }
+
+    public Mono<ServerResponse> listProjectByUser(ServerRequest serverRequest) {
+        return ServerResponse.ok().bodyValue("success");
+    }
+
+    public Mono<ServerResponse> countProjectByUser(ServerRequest serverRequest) {
         return ServerResponse.ok().bodyValue("success");
     }
 

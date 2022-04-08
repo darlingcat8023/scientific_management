@@ -39,7 +39,8 @@ public record ProjectUpdateRequest (
                         this.projectFund,
                         this.projectRemark,
                         model.projectStatus(),
-                        model.projectRejects()
+                        model.projectRejects(),
+                        model.creator()
                 );
         }
 }

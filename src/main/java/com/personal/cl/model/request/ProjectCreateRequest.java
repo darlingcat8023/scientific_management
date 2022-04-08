@@ -22,7 +22,9 @@ public record ProjectCreateRequest (
         Integer projectFund,
 
         @NotBlank(message = "项目备注不能为空", groups = {ProjectCreateVerify.class})
-        String projectRemark
+        String projectRemark,
+
+        Integer creator
 ) {
         public ProjectInfoModel convertModel() {
                 return new ProjectInfoModel(
@@ -35,7 +37,8 @@ public record ProjectCreateRequest (
                         this.projectFund,
                         this.projectRemark,
                         null,
-                        null
+                        null,
+                        this.creator
                 );
         }
 }
