@@ -30,12 +30,12 @@ public class AnnotationResource<A extends Annotation> {
         if (method.getDeclaringClass() == Object.class) {
             return null;
         }
-        MethodClassKey cacheKey = this.getCacheKey(method, targetClass);
-        A cached = this.annotations.get(cacheKey);
+        var cacheKey = this.getCacheKey(method, targetClass);
+        var cached = this.annotations.get(cacheKey);
         if (cached != null) {
             return cached;
         }
-        A annotation = this.computeOperations(method, targetClass);
+        var annotation = this.computeOperations(method, targetClass);
         if (annotation != null) {
             this.annotations.put(cacheKey, annotation);
         }
@@ -46,7 +46,7 @@ public class AnnotationResource<A extends Annotation> {
         if (!Modifier.isPublic(method.getModifiers())) {
             return null;
         } else {
-            Method specificMethod = AopUtils.getMostSpecificMethod(method, targetClass);
+            var specificMethod = AopUtils.getMostSpecificMethod(method, targetClass);
             A annotation = this.findAnnotation(specificMethod);
             if (annotation != null) {
                 return annotation;

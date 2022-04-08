@@ -2,9 +2,7 @@ package com.personal.cl.utils;
 
 import com.personal.cl.exception.BusinessException;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.util.Set;
 
 /**
  * @author xiaowenrou
@@ -22,7 +20,7 @@ public abstract class ValidatorUtils {
         if (validator == null) {
             throw new BusinessException("参数检查器获取失败");
         }
-        Set<ConstraintViolation<Object>> res = validator.validate(object, groups);
+        var res = validator.validate(object, groups);
         res.stream().findFirst().ifPresent(constraintViolation -> {
             throw new BusinessException(constraintViolation.getMessage());
         });

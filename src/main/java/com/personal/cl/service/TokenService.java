@@ -33,7 +33,7 @@ public class TokenService {
     }
 
     private Mono<String> generateToken(Integer userId, String userName, Integer isAdmin, String secret) {
-        String token = Jwts.builder().setSubject("user")
+        var token = Jwts.builder().setSubject("user")
                 .setClaims(Map.of("userId", userId, "userName", userName,"isAdmin", isAdmin))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
         return this.tokenInfoRepository.save(new TokenInfoModel(null, null, null, token))
@@ -55,9 +55,9 @@ public class TokenService {
         } catch (Exception e) {
             return Mono.error(new BusinessException("token无法解析"));
         }
-        Integer userId = body.get("userId", Integer.class);
-        String userName = body.get("userName", String.class);
-        Integer isAdmin = body.get("isAdmin", Integer.class);
+        var userId = body.get("userId", Integer.class);
+        var userName = body.get("userName", String.class);
+        var isAdmin = body.get("isAdmin", Integer.class);
         return this.tokenInfoRepository.queryTokenInfoModelByToken(token)
                 .switchIfEmpty(Mono.error(new BusinessException("token无效")))
                 .flatMap(model -> {

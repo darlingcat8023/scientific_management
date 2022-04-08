@@ -1,8 +1,5 @@
 package com.personal.cl.handler;
 
-import com.personal.cl.annotation.TokenCheck;
-import com.personal.cl.base.TokenInfo;
-import com.personal.cl.utils.ReactiveContextHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -17,11 +14,20 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class ProjectHandler {
 
-    @TokenCheck
     public Mono<ServerResponse> createProject(ServerRequest serverRequest) {
-        Mono<Object> user = ReactiveContextHolder.getServerWebExchange()
-                .map(x -> x.getAttributes().get("user"));
-        return ServerResponse.ok().body(user, TokenInfo.class);
+        return ServerResponse.ok().bodyValue("success");
+    }
+
+    public Mono<ServerResponse> updateProject(ServerRequest serverRequest) {
+        return ServerResponse.ok().bodyValue("success");
+    }
+
+    public Mono<ServerResponse> listProject(ServerRequest serverRequest) {
+        return ServerResponse.ok().bodyValue("success");
+    }
+
+    public Mono<ServerResponse> commitProject(ServerRequest serverRequest) {
+        return ServerResponse.ok().bodyValue("success");
     }
 
 }

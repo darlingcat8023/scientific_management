@@ -20,7 +20,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
 import java.lang.reflect.RecordComponent;
 
 @EnableWebFlux
@@ -29,7 +28,7 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
 
     @Override
     public Validator getValidator() {
-        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
+        var validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()
                 .messageInterpolator(new ParameterMessageInterpolator())
                 .addProperty( "hibernate.validator.fail_fast", "true" )
@@ -40,13 +39,13 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
     @Override
     public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
         // 配置jackson
-        ObjectMapper objectMapper = new ObjectMapper();
-        JacksonAnnotationIntrospector implicitRecordAI = new JacksonAnnotationIntrospector() {
+        var objectMapper = new ObjectMapper();
+        var implicitRecordAI = new JacksonAnnotationIntrospector() {
             @Override
             public PropertyName findNameForDeserialization(Annotated a) {
-                PropertyName nameForDeserialization = super.findNameForDeserialization(a);
+                var nameForDeserialization = super.findNameForDeserialization(a);
                 if (PropertyName.USE_DEFAULT.equals(nameForDeserialization) && a instanceof AnnotatedParameter && ((AnnotatedParameter) a).getDeclaringClass().isRecord()) {
-                    String str = findImplicitPropertyName((AnnotatedParameter) a);
+                    var str = findImplicitPropertyName((AnnotatedParameter) a);
                     if (str != null && !str.isEmpty()) {
                         return PropertyName.construct(str);
                     }

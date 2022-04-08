@@ -29,7 +29,7 @@ public class RequestAuthInterceptor implements MethodInterceptor {
     @Override
     @SuppressWarnings("all")
     public Mono<Object> invoke(MethodInvocation methodInvocation) throws Throwable {
-        TokenCheck check = this.resource.getSource(methodInvocation.getMethod(), methodInvocation.getThis().getClass());
+        var check = this.resource.getSource(methodInvocation.getMethod(), methodInvocation.getThis().getClass());
         if (check == null) {
             return (Mono<Object>) methodInvocation.proceed();
         }
@@ -53,7 +53,7 @@ public class RequestAuthInterceptor implements MethodInterceptor {
     }
 
     private String getTokenFromRequest(ServerHttpRequest serverRequest) {
-        String tokenString = serverRequest.getHeaders().getFirst("token");
+        var tokenString = serverRequest.getHeaders().getFirst("token");
         if (StringUtils.hasText(tokenString)) {
             return tokenString;
         }
