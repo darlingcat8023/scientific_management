@@ -7,5 +7,5 @@ package com.personal.cl.model.request;
 public record ProjectListRequest (
         Integer userId,
         String projectType,
-        Integer status
+        Integer projectStatus
 ) {}

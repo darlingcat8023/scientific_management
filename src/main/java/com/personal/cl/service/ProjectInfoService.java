@@ -5,10 +5,15 @@ import com.personal.cl.dao.ProjectTypeRepository;
 import com.personal.cl.dao.model.ProjectInfoModel;
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.request.ProjectCreateRequest;
+import com.personal.cl.model.request.ProjectListRequest;
 import com.personal.cl.model.request.ProjectUpdateRequest;
+import com.personal.cl.model.response.ProjectListResponse;
+import com.personal.cl.wrapper.ProjectInfoRepoWrapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -16,6 +21,8 @@ import reactor.core.publisher.Mono;
 public class ProjectInfoService {
 
     private final ProjectInfoRepository projectInfoRepository;
+
+    private final ProjectInfoRepoWrapper projectInfoRepoWrapper;
 
     private final ProjectTypeRepository projectTypeRepository;
 
@@ -39,8 +46,9 @@ public class ProjectInfoService {
                 .map(ProjectInfoModel::id);
     }
 
-    public Mono listByCreator(Mono<> requestMono, ) {
-
+    public Flux<ProjectListResponse> listByCreator(Mono<ProjectListRequest> requestMono, Pageable pageable) {
+        return requestMono.flatMapMany(request -> this.projectInfoRepoWrapper.listByCreator(request, pageable))
+                .map(ProjectListResponse::buildFromModel);
     }
 
 }

@@ -39,8 +39,9 @@ public class RouterFunctionConfiguration {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
                 .POST("/create", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::createProject)
                 .POST("/update", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::updateProject)
+                .GET("/listByCreator", projectInfoHandler::listProjectByCreator)
                 .build();
-        return RouterFunctions.route().path("/api/project_info", supplier).build();
+        return RouterFunctions.route().path("/api/projectInfo", supplier).build();
     }
 
     @Bean

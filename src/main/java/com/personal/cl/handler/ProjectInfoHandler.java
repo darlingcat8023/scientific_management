@@ -1,10 +1,14 @@
 package com.personal.cl.handler;
 
+import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.request.ProjectCreateRequest;
+import com.personal.cl.model.request.ProjectListRequest;
 import com.personal.cl.model.request.ProjectUpdateRequest;
+import com.personal.cl.model.response.ProjectListResponse;
 import com.personal.cl.service.ProjectInfoService;
 import com.personal.cl.utils.ValidatorUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -40,8 +44,11 @@ public class ProjectInfoHandler {
     }
 
     public Mono<ServerResponse> listProjectByCreator(ServerRequest serverRequest) {
-        
-        return ServerResponse.ok().bodyValue("success");
+        var userId = serverRequest.queryParam("userId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("没有用户id"));
+        var projectType = serverRequest.queryParam("projectType").orElse(null);
+        var status = serverRequest.queryParam("projectStatus").map(Integer::parseInt).orElse(null);
+        var page = serverRequest.queryParam("page").map(Integer::parseInt).orElse(1);
+        return ServerResponse.ok().body(this.projectInfoService.listByCreator(Mono.just(new ProjectListRequest(userId, projectType, status)), PageRequest.of(page - 1, 10)), ProjectListResponse.class);
     }
 
     public Mono<ServerResponse> countProjectByCreator(ServerRequest serverRequest) {
