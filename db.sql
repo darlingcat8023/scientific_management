@@ -49,7 +49,7 @@ create table project_info
     research_direction varchar(100) default ''                not null comment '研究方向',
     project_fund       int          default 0                 not null comment '项目经费',
     project_remark     varchar(255) default ''                not null comment '项目描述',
-    project_status     int          default 1                 not null comment '项目状态，0 初始化 1 待修改 2 已拒绝 3 已通过',
+    project_status     int          default 1                 not null comment '项目状态，0 已拒绝 1 已创建 2 已提交 3 已通过',
     project_rejects    int          default 0                 not null comment '被打回的次数'
 ) engine = InnoDB, comment = '项目信息表', charset = utf8;
 

@@ -1,5 +1,7 @@
 package com.personal.cl.model.request;
 
+import com.personal.cl.dao.model.ProjectInfoModel;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -21,4 +23,19 @@ public record ProjectCreateRequest (
 
         @NotBlank(message = "项目备注不能为空", groups = {ProjectCreateVerify.class})
         String projectRemark
-) {}
+) {
+        public ProjectInfoModel convertModel() {
+                return new ProjectInfoModel(
+                        null,
+                        null,
+                        null,
+                        this.projectName,
+                        this.projectType,
+                        this.researchDirection,
+                        this.projectFund,
+                        this.projectRemark,
+                        null,
+                        null
+                );
+        }
+}

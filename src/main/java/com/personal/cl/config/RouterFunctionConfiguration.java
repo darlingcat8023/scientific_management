@@ -38,8 +38,9 @@ public class RouterFunctionConfiguration {
     public RouterFunction<ServerResponse> projectRouterFunction(ProjectInfoHandler projectInfoHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
                 .POST("/create", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::createProject)
+                .POST("/update", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::updateProject)
                 .build();
-        return RouterFunctions.route().path("/api/project", supplier).build();
+        return RouterFunctions.route().path("/api/project_info", supplier).build();
     }
 
     @Bean
@@ -65,8 +66,9 @@ public class RouterFunctionConfiguration {
 
         @Override
         protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
-            HandlerFunction<ServerResponse> function = request -> ServerResponse.status(500)
+            HandlerFunction<ServerResponse> function = request -> ServerResponse.badRequest()
                     .body(Mono.just(errorAttributes.getError(request))
+                            .log()
                             .ofType(BusinessException.class)
                             .map(BusinessException::getMessage)
                             .defaultIfEmpty("fail"), String.class);

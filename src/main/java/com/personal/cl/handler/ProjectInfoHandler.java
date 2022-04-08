@@ -1,6 +1,7 @@
 package com.personal.cl.handler;
 
 import com.personal.cl.model.request.ProjectCreateRequest;
+import com.personal.cl.model.request.ProjectUpdateRequest;
 import com.personal.cl.service.ProjectInfoService;
 import com.personal.cl.utils.ValidatorUtils;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Mono;
 import javax.validation.Validator;
 
 import static com.personal.cl.model.RequestVerify.ProjectCreateVerify;
+import static com.personal.cl.model.RequestVerify.ProjectUpdateVerify;
 
 /**
  * @author xiaowenrou
@@ -32,7 +34,9 @@ public class ProjectInfoHandler {
     }
 
     public Mono<ServerResponse> updateProject(ServerRequest serverRequest) {
-        return ServerResponse.ok().bodyValue("success");
+        var requestMono = serverRequest.bodyToMono(ProjectUpdateRequest.class)
+                .doOnNext(req -> ValidatorUtils.valid(this.validator, req, ProjectUpdateVerify.class));
+        return ServerResponse.ok().body(this.projectInfoService.updateProject(requestMono), Integer.class);
     }
 
     public Mono<ServerResponse> listProject(ServerRequest serverRequest) {
