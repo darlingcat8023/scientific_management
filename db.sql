@@ -74,8 +74,9 @@ create table project_participant_info (
     deleted_at          int          default 0                 not null comment '删除标志',
     project_id          int          default 0                 not null comment '项目id',
     user_id             int          default 0                 not null comment '用户id',
-    user_role           varchar(50)  default ''                not null comment '用户角色'
-) comment '项目参与者表' charset = utf8;
+    user_name           varchar(50)  default ''                not null comment '用户名',
+    user_role           tinyint(1)   default 0                 not null comment '用户角色 0 导师 1 学生'
+) engine = InnoDB, comment = '项目参与者表', charset = utf8;
 
 -- 项目审核信息表
 create table project_audit_info (

@@ -51,4 +51,17 @@ public class ProjectInfoService {
                 .map(ProjectListResponse::buildFromModel);
     }
 
+    public Mono<Long> countByCreator(Mono<ProjectListRequest> requestMono) {
+        return requestMono.flatMap(this.projectInfoRepoWrapper::countByCreator);
+    }
+
+    public Flux<ProjectListResponse> listByParticipant(Mono<ProjectListRequest> requestMono, Pageable pageable) {
+        return requestMono.flatMapMany(request -> this.projectInfoRepoWrapper.listByUser(request, pageable))
+                .map(ProjectListResponse::buildFromModel);
+    }
+
+    public Mono<Long> countByParticipant(Mono<ProjectListRequest> requestMono) {
+        return requestMono.flatMap(this.projectInfoRepoWrapper::countByUser);
+    }
+
 }

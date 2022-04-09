@@ -44,23 +44,31 @@ public class ProjectInfoHandler {
     }
 
     public Mono<ServerResponse> listProjectByCreator(ServerRequest serverRequest) {
-        var userId = serverRequest.queryParam("userId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("没有用户id"));
-        var projectType = serverRequest.queryParam("projectType").orElse(null);
-        var status = serverRequest.queryParam("projectStatus").map(Integer::parseInt).orElse(null);
         var page = serverRequest.queryParam("page").map(Integer::parseInt).orElse(1);
-        return ServerResponse.ok().body(this.projectInfoService.listByCreator(Mono.just(new ProjectListRequest(userId, projectType, status)), PageRequest.of(page - 1, 10)), ProjectListResponse.class);
+        return ServerResponse.ok().body(this.projectInfoService.listByCreator(this.buildRequestMono(serverRequest), PageRequest.of(page - 1, 10)), ProjectListResponse.class);
     }
 
     public Mono<ServerResponse> countProjectByCreator(ServerRequest serverRequest) {
-        return ServerResponse.ok().bodyValue("success");
+        return ServerResponse.ok().body(this.projectInfoService.countByCreator(this.buildRequestMono(serverRequest)), Long.class);
     }
 
-    public Mono<ServerResponse> listProjectByUser(ServerRequest serverRequest) {
-        return ServerResponse.ok().bodyValue("success");
+    public Mono<ServerResponse> listProjectByParticipant(ServerRequest serverRequest) {
+        var page = serverRequest.queryParam("page").map(Integer::parseInt).orElse(1);
+        return ServerResponse.ok().body(this.projectInfoService.listByParticipant(this.buildRequestMono(serverRequest), PageRequest.of(page - 1, 10)), ProjectListResponse.class);
     }
 
-    public Mono<ServerResponse> countProjectByUser(ServerRequest serverRequest) {
-        return ServerResponse.ok().bodyValue("success");
+    public Mono<ServerResponse> countProjectByParticipant(ServerRequest serverRequest) {
+        return ServerResponse.ok().body(this.projectInfoService.countByParticipant(this.buildRequestMono(serverRequest)), Long.class);
+    }
+
+    private Mono<ProjectListRequest> buildRequestMono(ServerRequest serverRequest) {
+        var userId = serverRequest.queryParam("userId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("没有用户id"));
+        var projectName = serverRequest.queryParam("projectName").orElse(null);
+        var projectType = serverRequest.queryParam("projectType").orElse(null);
+        var status = serverRequest.queryParam("projectStatus").map(Integer::parseInt).orElse(null);
+        var greaterThen = serverRequest.queryParam("greaterThen").map(Integer::parseInt).orElse(null);
+        var lessThen = serverRequest.queryParam("lessThen").map(Integer::parseInt).orElse(null);
+        return Mono.just(new ProjectListRequest(userId, projectName, projectType, status, greaterThen, lessThen));
     }
 
     public Mono<ServerResponse> commitProject(ServerRequest serverRequest) {

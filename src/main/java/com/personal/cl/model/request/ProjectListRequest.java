@@ -6,6 +6,9 @@ package com.personal.cl.model.request;
  */
 public record ProjectListRequest (
         Integer userId,
+        String projectName,
         String projectType,
-        Integer projectStatus
+        Integer projectStatus,
+        Integer fundGreaterThen,
+        Integer fundLessThen
 ) {}

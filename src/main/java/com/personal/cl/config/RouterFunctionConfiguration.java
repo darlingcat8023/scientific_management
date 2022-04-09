@@ -1,9 +1,7 @@
 package com.personal.cl.config;
 
 import com.personal.cl.exception.BusinessException;
-import com.personal.cl.handler.LoginHandler;
-import com.personal.cl.handler.ProjectInfoHandler;
-import com.personal.cl.handler.ProjectTypeHandler;
+import com.personal.cl.handler.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -35,13 +33,36 @@ public class RouterFunctionConfiguration {
     }
 
     @Bean
+    public RouterFunction<ServerResponse> userRouterFunction(UserAccountHandler userAccountHandler) {
+        Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
+                .GET("/filter", userAccountHandler::filter)
+                .GET("/detail", userAccountHandler::detail)
+                .GET("/securityDetail", userAccountHandler::securityDetail)
+                .build();
+        return RouterFunctions.route().path("/api/account", supplier).build();
+    }
+
+    @Bean
     public RouterFunction<ServerResponse> projectRouterFunction(ProjectInfoHandler projectInfoHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
                 .POST("/create", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::createProject)
                 .POST("/update", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::updateProject)
                 .GET("/listByCreator", projectInfoHandler::listProjectByCreator)
+                .GET("/countByCreator", projectInfoHandler::countProjectByCreator)
+                .GET("/listByParticipant", projectInfoHandler::listProjectByParticipant)
+                .GET("/countByParticipant", projectInfoHandler::countProjectByParticipant)
                 .build();
         return RouterFunctions.route().path("/api/projectInfo", supplier).build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> projectParticipantRouterFunction(ProjectParticipantHandler projectParticipantHandler) {
+        Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
+                .POST("/add", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectParticipantHandler::addProjectParticipant)
+                .POST("remove", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectParticipantHandler::removeProjectParticipant)
+                .GET("list", projectParticipantHandler::listProjectParticipant)
+                .build();
+        return RouterFunctions.route().path("/api/projectParticipant", supplier).build();
     }
 
     @Bean
@@ -50,7 +71,7 @@ public class RouterFunctionConfiguration {
                 .GET("/filter", projectTypeHandler::filter)
                 .GET("/list", projectTypeHandler::list)
                 .build();
-        return RouterFunctions.route().path("/api/project_type", supplier).build();
+        return RouterFunctions.route().path("/api/projectType", supplier).build();
     }
 
     /**
