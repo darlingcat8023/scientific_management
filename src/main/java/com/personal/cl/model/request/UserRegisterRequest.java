@@ -1,7 +1,6 @@
 package com.personal.cl.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.personal.cl.dao.model.UserAccountModel;
 
 import javax.validation.constraints.NotBlank;
@@ -13,7 +12,6 @@ import static com.personal.cl.model.RequestVerify.UserRegisterVerify;
  * @author xiaowenrou
  * @date 4/6/22
  */
-@JsonDeserialize
 public record UserRegisterRequest (
 
         @NotBlank(message = "用户名不能为空", groups = {UserRegisterVerify.class})

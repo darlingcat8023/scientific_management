@@ -16,6 +16,7 @@ import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
+import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
@@ -24,6 +25,15 @@ import javax.validation.Validation;
 @EnableWebFlux
 @Configuration(proxyBeanMethods = false)
 public class WebFluxConfiguration implements WebFluxConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedHeaders("*")
+                .allowedMethods("GET", "POST", "OPTIONS", "DELETE", "PUT");
+        WebFluxConfigurer.super.addCorsMappings(registry);
+    }
 
     @Override
     public Validator getValidator() {
