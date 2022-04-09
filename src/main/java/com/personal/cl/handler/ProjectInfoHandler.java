@@ -32,13 +32,13 @@ public class ProjectInfoHandler {
     private final Validator validator;
 
     public Mono<ServerResponse> createProject(ServerRequest serverRequest) {
-        var requestMono = serverRequest.bodyToMono(ProjectCreateRequest.class)
+        var requestMono = serverRequest.bodyToMono(ProjectCreateRequest.class).log()
                 .doOnNext(req -> ValidatorUtils.valid(this.validator, req, ProjectCreateVerify.class));
         return ServerResponse.ok().body(this.projectInfoService.createProject(requestMono), Integer.class);
     }
 
     public Mono<ServerResponse> updateProject(ServerRequest serverRequest) {
-        var requestMono = serverRequest.bodyToMono(ProjectUpdateRequest.class)
+        var requestMono = serverRequest.bodyToMono(ProjectUpdateRequest.class).log()
                 .doOnNext(req -> ValidatorUtils.valid(this.validator, req, ProjectUpdateVerify.class));
         return ServerResponse.ok().body(this.projectInfoService.updateProject(requestMono), Integer.class);
     }
@@ -68,7 +68,7 @@ public class ProjectInfoHandler {
         var status = serverRequest.queryParam("projectStatus").map(Integer::parseInt).orElse(null);
         var greaterThen = serverRequest.queryParam("greaterThen").map(Integer::parseInt).orElse(null);
         var lessThen = serverRequest.queryParam("lessThen").map(Integer::parseInt).orElse(null);
-        return Mono.just(new ProjectListRequest(userId, projectName, projectType, status, greaterThen, lessThen));
+        return Mono.just(new ProjectListRequest(userId, projectName, projectType, status, greaterThen, lessThen)).log();
     }
 
     public Mono<ServerResponse> commitProject(ServerRequest serverRequest) {
