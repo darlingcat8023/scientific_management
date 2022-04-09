@@ -51,6 +51,7 @@ public class RouterFunctionConfiguration {
                 .GET("/countByCreator", projectInfoHandler::countProjectByCreator)
                 .GET("/listByParticipant", projectInfoHandler::listProjectByParticipant)
                 .GET("/countByParticipant", projectInfoHandler::countProjectByParticipant)
+                .POST("/commit", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::commitProject)
                 .build();
         return RouterFunctions.route().path("/api/projectInfo", supplier).build();
     }
