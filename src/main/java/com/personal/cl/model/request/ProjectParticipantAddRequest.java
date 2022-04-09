@@ -1,5 +1,7 @@
 package com.personal.cl.model.request;
 
+import com.personal.cl.dao.model.ProjectParticipantInfoModel;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -20,4 +22,16 @@ public record ProjectParticipantAddRequest (
         @NotNull(message = "用户角色不能为空", groups = {ProjectParticipantAddVerify.class})
         Integer userRole
 
-) {}
+) {
+        public ProjectParticipantInfoModel convertModel(Integer projectId) {
+                return new ProjectParticipantInfoModel(
+                        null,
+                        null,
+                        null,
+                        projectId,
+                        this.userId,
+                        this.userName,
+                        this.userRole
+                );
+        }
+}

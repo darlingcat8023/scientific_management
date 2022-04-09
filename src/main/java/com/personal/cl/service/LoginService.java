@@ -7,6 +7,7 @@ import com.personal.cl.model.request.UserRegisterRequest;
 import com.personal.cl.model.response.UserLoginResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,6 +22,7 @@ public class LoginService {
 
     private final TokenService tokenService;
 
+    @Transactional(rollbackFor = {Exception.class})
     public Mono<UserLoginResponse> userLogin(Mono<UserLoginRequest> requestMono) {
         return requestMono.flatMap(request -> this.userAccountRepository.findUserAccountModelByUserMobileAndUserPassword(request.userMobile(), request.userPassword()))
                 .switchIfEmpty(Mono.error(new BusinessException("用户名或密码错误")))

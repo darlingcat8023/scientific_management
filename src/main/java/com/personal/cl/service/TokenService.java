@@ -34,7 +34,7 @@ public class TokenService {
 
     private Mono<String> generateToken(Integer userId, String userName, Integer isAdmin, String secret) {
         var token = Jwts.builder().setSubject("user")
-                .setClaims(Map.of("userId", userId, "userName", userName,"isAdmin", isAdmin))
+                .setClaims(Map.of("userId", userId, "userName", userName,"isAdmin", isAdmin, "timeStamp", System.currentTimeMillis()))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
         return this.tokenInfoRepository.save(new TokenInfoModel(null, null, null, token))
                 .map(TokenInfoModel::token);

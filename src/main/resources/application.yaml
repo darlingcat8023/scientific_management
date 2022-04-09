@@ -8,7 +8,11 @@ spring:
     password: 248614740
     pool:
       enabled: true
-      max-size: 20
-      initial-size: 10
+      max-size: 50
+      initial-size: 30
       validation-query: select 1
+      max-idle-time: 300m
+      max-acquire-time: 3s
+      max-create-connection-time: 5s
+
 
