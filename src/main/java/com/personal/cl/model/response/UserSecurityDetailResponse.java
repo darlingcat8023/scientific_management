@@ -8,19 +8,13 @@ import com.personal.cl.dao.model.UserAccountModel;
  * @date 4/9/22
  */
 public record UserSecurityDetailResponse (
-
         Integer userId,
-
         String userName,
-
         @SecuritySerialize
         String userMobile,
-
         @SecuritySerialize
         String userIdentity,
-
         Integer userType,
-
         String userExtend
 ) {
     public static UserSecurityDetailResponse buildFromModel(UserAccountModel model) {

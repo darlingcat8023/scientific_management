@@ -7,17 +7,11 @@ import com.personal.cl.dao.model.UserAccountModel;
  * @date 4/9/22
  */
 public record UserDetailResponse (
-
         Integer userId,
-
         String userName,
-
         String userMobile,
-
         String userIdentity,
-
         Integer userType,
-
         String userExtend
 ) {
     public static UserDetailResponse buildFromModel(UserAccountModel model) {

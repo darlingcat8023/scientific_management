@@ -9,29 +9,17 @@ import java.sql.Timestamp;
  * @date 4/9/22
  */
 public record ProjectListResponse (
-
         Integer id,
-
         Timestamp createdAt,
-
         Timestamp updatedAt,
-
         String projectName,
-
         String projectType,
-
         String researchDirection,
-
         Integer projectFund,
-
         String projectRemark,
-
         Integer projectStatus,
-
         Boolean enableCommit,
-
         Integer creator
-
 ) {
     public static ProjectListResponse buildFromModel(ProjectInfoModel model) {
         return new ProjectListResponse(

@@ -2,6 +2,7 @@ package com.personal.cl.handler;
 
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.request.ProjectParticipantAddRequest;
+import com.personal.cl.model.response.ProjectParticipantListResponse;
 import com.personal.cl.service.ProjectParticipantService;
 import com.personal.cl.utils.ValidatorUtils;
 import lombok.AllArgsConstructor;
@@ -34,11 +35,15 @@ public class ProjectParticipantHandler {
     }
 
     public Mono<ServerResponse> removeProjectParticipant(ServerRequest serverRequest) {
-        return null;
+        var projectId = serverRequest.queryParam("projectId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("项目id不能为空"));
+        var requestFlux = serverRequest.bodyToFlux(Integer.class);
+        return ServerResponse.ok().body(this.projectParticipantService.removeProjectParticipant(projectId, requestFlux), String.class);
     }
 
     public Mono<ServerResponse> listProjectParticipant(ServerRequest serverRequest) {
-        return null;
+        var projectId = serverRequest.queryParam("projectId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("项目id不能为空"));
+        var userRole = serverRequest.queryParam("userRole").map(Integer::parseInt).orElseThrow(() -> new BusinessException("用户角色不能为空"));
+        return ServerResponse.ok().body(this.projectParticipantService.listProjectParticipant(projectId, userRole), ProjectParticipantListResponse.class);
     }
 
 }
