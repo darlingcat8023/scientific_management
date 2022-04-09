@@ -10,6 +10,7 @@ import com.personal.cl.utils.ValidatorUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -62,12 +63,16 @@ public class ProjectInfoHandler {
     }
 
     private Mono<ProjectListRequest> buildRequestMono(ServerRequest serverRequest) {
-        var userId = serverRequest.queryParam("userId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("没有用户id"));
+        var userId = serverRequest.queryParam("userId")
+                .map(Integer::parseInt).orElseThrow(() -> new BusinessException("没有用户id"));
         var projectName = serverRequest.queryParam("projectName").orElse(null);
         var projectType = serverRequest.queryParam("projectType").orElse(null);
-        var status = serverRequest.queryParam("projectStatus").map(Integer::parseInt).orElse(null);
-        var greaterThen = serverRequest.queryParam("greaterThen").map(Integer::parseInt).orElse(null);
-        var lessThen = serverRequest.queryParam("lessThen").map(Integer::parseInt).orElse(null);
+        var status = serverRequest.queryParam("projectStatus")
+                .filter(StringUtils::hasText).map(Integer::parseInt).orElse(null);
+        var greaterThen = serverRequest.queryParam("greaterThen")
+                .filter(StringUtils::hasText).map(Integer::parseInt).orElse(null);
+        var lessThen = serverRequest.queryParam("lessThen")
+                .filter(StringUtils::hasText).map(Integer::parseInt).orElse(null);
         return Mono.just(new ProjectListRequest(userId, projectName, projectType, status, greaterThen, lessThen)).log();
     }
 
