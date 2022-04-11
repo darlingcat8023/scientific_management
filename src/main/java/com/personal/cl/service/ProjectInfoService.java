@@ -1,8 +1,10 @@
 package com.personal.cl.service;
 
 import com.personal.cl.dao.ProjectInfoRepository;
+import com.personal.cl.dao.ProjectParticipantRepository;
 import com.personal.cl.dao.ProjectTypeRepository;
 import com.personal.cl.dao.model.ProjectInfoModel;
+import com.personal.cl.dao.model.ProjectParticipantInfoModel;
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.request.ProjectCreateRequest;
 import com.personal.cl.model.request.ProjectListRequest;
@@ -21,6 +23,8 @@ import reactor.core.publisher.Mono;
 public class ProjectInfoService {
 
     private final ProjectInfoRepository projectInfoRepository;
+
+    private final ProjectParticipantRepository projectParticipantRepository;
 
     private final ProjectInfoRepoWrapper projectInfoRepoWrapper;
 
@@ -56,12 +60,13 @@ public class ProjectInfoService {
     }
 
     public Flux<ProjectListResponse> listByParticipant(Mono<ProjectListRequest> requestMono, Pageable pageable) {
-        return requestMono.flatMapMany(request -> this.projectInfoRepoWrapper.listByUser(request, pageable))
-                .map(ProjectListResponse::buildFromModel);
+        return requestMono.flatMapMany(request -> this.projectInfoRepository.findAllByIdIn(this.projectParticipantRepository.findProjectParticipantInfoModelsByUserId(request.userId())
+                .map(ProjectParticipantInfoModel::projectId).distinct(), pageable)).map(ProjectListResponse::buildFromModel);
     }
 
     public Mono<Long> countByParticipant(Mono<ProjectListRequest> requestMono) {
-        return requestMono.flatMap(this.projectInfoRepoWrapper::countByUser);
+        return requestMono.flatMap(request -> this.projectParticipantRepository.findProjectParticipantInfoModelsByUserId(request.userId())
+                .map(ProjectParticipantInfoModel::projectId).distinct().count());
     }
 
 }

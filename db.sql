@@ -62,8 +62,8 @@ create table project_file
     updated_at         timestamp    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     deleted_at         int          default 0                 not null comment '删除标志',
     project_id         int          default 0                 not null comment '项目id',
-    file_name          varchar(255) default ''                not null comment '文件名',
-    file_content       longtext     default ''                not null comment '文件的base64'
+    file_name          varchar(255) default ''                 not null comment '文件名',
+    file_content       longtext     default ''                 not null comment '文件的base64'
 ) comment '项目文件' charset = utf-8;
 
 -- 项目参与者表

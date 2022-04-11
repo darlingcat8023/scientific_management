@@ -61,7 +61,16 @@ public class RouterFunctionConfiguration {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
                 .POST("/add", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectParticipantHandler::addProjectParticipant)
                 .POST("remove", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectParticipantHandler::removeProjectParticipant)
-                .GET("list", projectParticipantHandler::listProjectParticipant)
+                .GET("/list", projectParticipantHandler::listProjectParticipant)
+                .build();
+        return RouterFunctions.route().path("/api/projectParticipant", supplier).build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> projectFileRouterFunction(ProjectFileHandler projectFileHandler) {
+        Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
+                .POST("/add", RequestPredicates.contentType(MediaType.MULTIPART_FORM_DATA), projectFileHandler::uploadFile)
+                .GET("/download", projectFileHandler::downloadFile)
                 .build();
         return RouterFunctions.route().path("/api/projectParticipant", supplier).build();
     }
@@ -90,8 +99,7 @@ public class RouterFunctionConfiguration {
         @Override
         protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
             HandlerFunction<ServerResponse> function = request -> ServerResponse.badRequest()
-                    .body(Mono.just(errorAttributes.getError(request))
-                            .log()
+                    .body(Mono.just(errorAttributes.getError(request)).log()
                             .ofType(BusinessException.class)
                             .map(BusinessException::getMessage)
                             .defaultIfEmpty("fail"), String.class);

@@ -7,6 +7,7 @@ import com.personal.cl.model.request.ProjectParticipantAddRequest;
 import com.personal.cl.model.response.ProjectParticipantListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +23,7 @@ public class ProjectParticipantService {
 
     private final ProjectParticipantRepository projectParticipantRepository;
 
+    @Transactional(rollbackFor = {Exception.class})
     public Mono<String> addProjectParticipant(Integer projectId, Flux<ProjectParticipantAddRequest> requestFlux) {
         return this.projectInfoRepository.findById(projectId)
                 .switchIfEmpty(Mono.error(new BusinessException("项目id不存在")))
@@ -34,6 +36,7 @@ public class ProjectParticipantService {
                 .then(Mono.just("success"));
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     public Mono<String> removeProjectParticipant(Integer projectId, Flux<Integer> requestFlux) {
         return this.projectInfoRepository.findById(projectId)
                 .switchIfEmpty(Mono.error(new BusinessException("项目id不存在")))
@@ -50,6 +53,5 @@ public class ProjectParticipantService {
         return this.projectParticipantRepository.findProjectParticipantInfoModelsByProjectIdAndUserRole(projectId, userRole)
                 .map(ProjectParticipantListResponse::buildFromModel);
     }
-
 
 }

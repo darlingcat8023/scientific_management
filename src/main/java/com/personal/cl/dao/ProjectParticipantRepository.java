@@ -20,4 +20,11 @@ public interface ProjectParticipantRepository extends R2dbcRepository<ProjectPar
      */
     Flux<ProjectParticipantInfoModel> findProjectParticipantInfoModelsByProjectIdAndUserRole(Integer projectId, Integer userRole);
 
+    /**
+     * 获取项目id
+     * @param userId
+     * @return
+     */
+    Flux<ProjectParticipantInfoModel> findProjectParticipantInfoModelsByUserId(Integer userId);
+
 }

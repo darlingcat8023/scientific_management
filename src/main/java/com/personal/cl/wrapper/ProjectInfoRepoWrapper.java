@@ -53,12 +53,4 @@ public class ProjectInfoRepoWrapper {
         return Query.query(criteria);
     }
 
-    public Flux<ProjectInfoModel> listByUser(ProjectListRequest request, Pageable pageable) {
-        return null;
-    }
-
-    public Mono<Long> countByUser(ProjectListRequest request) {
-        return null;
-    }
-
 }
