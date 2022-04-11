@@ -1,6 +1,7 @@
 package com.personal.cl.handler;
 
 import com.personal.cl.exception.BusinessException;
+import com.personal.cl.model.request.ProjectCommitRequest;
 import com.personal.cl.model.request.ProjectCreateRequest;
 import com.personal.cl.model.request.ProjectListRequest;
 import com.personal.cl.model.request.ProjectUpdateRequest;
@@ -77,7 +78,8 @@ public class ProjectInfoHandler {
     }
 
     public Mono<ServerResponse> commitProject(ServerRequest serverRequest) {
-        return ServerResponse.ok().bodyValue("success");
+        var requestMono = serverRequest.bodyToMono(ProjectCommitRequest.class);
+        return ServerResponse.ok().body(this.projectInfoService.commitProject(requestMono), String.class);
     }
 
 }

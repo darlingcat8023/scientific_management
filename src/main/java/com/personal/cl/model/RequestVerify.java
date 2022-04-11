@@ -16,4 +16,6 @@ public interface RequestVerify {
 
     interface ProjectParticipantAddVerify{}
 
+    interface ProjectCommitVerify{}
+
 }

@@ -64,7 +64,7 @@ create table project_file
     project_id         int          default 0                 not null comment '项目id',
     file_name          varchar(255) default ''                 not null comment '文件名',
     file_content       longtext     default ''                 not null comment '文件的base64'
-) comment '项目文件' charset = utf-8;
+) comment '项目文件', charset = utf8;
 
 -- 项目参与者表
 create table project_participant_info (
@@ -86,9 +86,10 @@ create table project_audit_info (
     deleted_at          int          default 0                 not null comment '删除标志',
     project_id          int          default 0                 not null comment '项目id',
     audit_user_id       int          default 0                 not null comment '审核用户id',
-    audit_step          tinyint(1)   default 0                 not null comment '审核环节 1 初审 2 终审',
-    audit_result        tinyint(1)   default 0                 not null comment '审核结果 0 未通过 1 已通过',
-    audit_active        tinyint(1)   default 0                 not null comment '状态激活 0 未激活 2 已激活',
+    audit_user_name     varchar(50)  default ''                not null comment '审核用户名',
+    audit_step          tinyint(1)   default 1                 not null comment '审核环节 1 初审 2 终审',
+    audit_result        tinyint(1)   default 0                 not null comment '审核结果 0 已拒绝 1 初始化 2 通过',
+    audit_active        tinyint(1)   default 0                 not null comment '状态激活 0 未激活 1 已激活',
     audit_comment       varchar(500) default ''                not null comment '审核备注'
 ) comment '项目审核信息表' charset = utf8;
 
