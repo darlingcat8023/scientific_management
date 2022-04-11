@@ -60,8 +60,10 @@ public class ProjectInfoService {
     }
 
     public Flux<ProjectListResponse> listByParticipant(Mono<ProjectListRequest> requestMono, Pageable pageable) {
-        return requestMono.flatMapMany(request -> this.projectInfoRepository.findAllByIdIn(this.projectParticipantRepository.findProjectParticipantInfoModelsByUserId(request.userId())
-                .map(ProjectParticipantInfoModel::projectId).distinct(), pageable)).map(ProjectListResponse::buildFromModel);
+        return requestMono.flatMapMany(request -> this.projectParticipantRepository.findProjectParticipantInfoModelsByUserId(request.userId())
+                .map(ProjectParticipantInfoModel::projectId).distinct()
+                .collectList().flatMapMany(collection -> this.projectInfoRepository.findAllByIdIn(collection, pageable)))
+                .map(ProjectListResponse::buildFromModel);
     }
 
     public Mono<Long> countByParticipant(Mono<ProjectListRequest> requestMono) {
