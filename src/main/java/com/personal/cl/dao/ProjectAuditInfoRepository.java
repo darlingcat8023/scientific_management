@@ -15,7 +15,7 @@ public interface ProjectAuditInfoRepository extends R2dbcRepository<ProjectAudit
      * @param active
      * @return
      */
-    Flux<ProjectAuditInfoModel> findProjectAuditInfoModelsByAuditUserIdAAndAuditActive(Integer auditUserId, Integer active);
+    Flux<ProjectAuditInfoModel> findProjectAuditInfoModelsByAuditUserIdAndAuditActive(Integer auditUserId, Integer active);
 
     /**
      * 删除id
