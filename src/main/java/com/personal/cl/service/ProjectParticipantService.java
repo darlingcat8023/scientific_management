@@ -32,20 +32,9 @@ public class ProjectParticipantService {
                         throw new BusinessException("当前状态不允许修改");
                     }
                 })
-                .flatMapMany(project -> this.projectParticipantRepository.saveAll(requestFlux.map(item -> item.convertModel(projectId))))
-                .then(Mono.just("success"));
-    }
-
-    @Transactional(rollbackFor = {Exception.class})
-    public Mono<String> removeProjectParticipant(Integer projectId, Flux<Integer> requestFlux) {
-        return this.projectInfoRepository.findById(projectId)
-                .switchIfEmpty(Mono.error(new BusinessException("项目id不存在")))
-                .doOnNext(project -> {
-                    if (!project.projectStatus().equals(1)) {
-                        throw new BusinessException("当前状态不允许修改");
-                    }
-                })
-                .flatMap(project -> this.projectParticipantRepository.deleteById(requestFlux))
+                .flatMapMany(project -> this.projectParticipantRepository.deleteAllByProjectId(projectId)
+                        .flatMapMany(v -> this.projectParticipantRepository.saveAll(requestFlux.map(item -> item.convertModel(projectId))))
+                )
                 .then(Mono.just("success"));
     }
 

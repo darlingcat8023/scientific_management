@@ -60,7 +60,6 @@ public class RouterFunctionConfiguration {
     public RouterFunction<ServerResponse> projectParticipantRouterFunction(ProjectParticipantHandler projectParticipantHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
                 .POST("/add", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectParticipantHandler::addProjectParticipant)
-                .POST("remove", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectParticipantHandler::removeProjectParticipant)
                 .GET("/list", projectParticipantHandler::listProjectParticipant)
                 .build();
         return RouterFunctions.route().path("/api/projectParticipant", supplier).build();

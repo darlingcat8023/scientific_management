@@ -8,6 +8,6 @@ import org.springframework.stereotype.Controller;
 public class ProjectAuditHandler {
 
     private final ProjectAuditService projectAuditService;
-    
+
 
 }

@@ -10,7 +10,7 @@ create table user_account
     user_password  varchar(50)   default ''                not null comment '密码',
     user_identity  varchar(50)   default ''                not null comment '身份证号',
     user_type      tinyint(1)    default 0                 not null comment '用户类型 0 学生 1教师',
-    user_extend    varchar(5000) default ''                not null comment '用户附加信息',
+    user_extend    varchar(5000) default ''                not null comment '用户附加信息'
 ) engine = InnoDB, comment = '用户信息表', default charset = utf8;
 
 -- 管理员用户表

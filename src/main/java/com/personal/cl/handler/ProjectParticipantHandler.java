@@ -29,15 +29,9 @@ public class ProjectParticipantHandler {
 
     public Mono<ServerResponse> addProjectParticipant(ServerRequest serverRequest) {
         var projectId = serverRequest.queryParam("projectId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("项目id不能为空"));
-        var requestFlux = serverRequest.bodyToFlux(ProjectParticipantAddRequest.class)
+        var requestFlux = serverRequest.bodyToFlux(ProjectParticipantAddRequest.class).log()
                 .doOnNext(req -> ValidatorUtils.valid(this.validator, req, ProjectParticipantAddVerify.class ));
         return ServerResponse.ok().body(this.projectParticipantService.addProjectParticipant(projectId, requestFlux), String.class);
-    }
-
-    public Mono<ServerResponse> removeProjectParticipant(ServerRequest serverRequest) {
-        var projectId = serverRequest.queryParam("projectId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("项目id不能为空"));
-        var requestFlux = serverRequest.bodyToFlux(Integer.class);
-        return ServerResponse.ok().body(this.projectParticipantService.removeProjectParticipant(projectId, requestFlux), String.class);
     }
 
     public Mono<ServerResponse> listProjectParticipant(ServerRequest serverRequest) {
