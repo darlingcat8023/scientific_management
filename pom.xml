@@ -20,6 +20,7 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<r2dbc.version>2.6.6</r2dbc.version>
 		<javax.el.version>3.0.0</javax.el.version>
 		<jwt.version>0.9.1</jwt.version>
 		<openapi.version>1.6.0</openapi.version>
@@ -48,6 +49,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
+			<version>${r2dbc.version}</version>
 		</dependency>
 
 		<dependency>
@@ -102,8 +104,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
