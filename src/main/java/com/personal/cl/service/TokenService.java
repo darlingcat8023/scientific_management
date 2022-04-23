@@ -2,6 +2,7 @@ package com.personal.cl.service;
 
 import com.personal.cl.base.TokenInfo;
 import com.personal.cl.dao.TokenInfoRepository;
+import com.personal.cl.dao.model.AdminUserAccountModel;
 import com.personal.cl.dao.model.TokenInfoModel;
 import com.personal.cl.dao.model.UserAccountModel;
 import com.personal.cl.exception.BusinessException;
@@ -30,6 +31,10 @@ public class TokenService {
 
     public Mono<String> generateUserToken(UserAccountModel model) {
         return this.generateToken(model.id(), model.userName(), 0, USER_TOKEN_SECRET);
+    }
+
+    public Mono<String> generateAdminToken(AdminUserAccountModel model) {
+        return this.generateToken(model.id(), model.account(), 1, ADMIN_TOKEN_SECRET);
     }
 
     private Mono<String> generateToken(Integer userId, String userName, Integer isAdmin, String secret) {

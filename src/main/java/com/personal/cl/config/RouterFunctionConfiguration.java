@@ -2,6 +2,7 @@ package com.personal.cl.config;
 
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.handler.*;
+import com.personal.cl.handler.admin.AdminLoginHandler;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -52,6 +53,7 @@ public class RouterFunctionConfiguration {
                 .GET("/listByParticipant", projectInfoHandler::listProjectByParticipant)
                 .GET("/countByParticipant", projectInfoHandler::countProjectByParticipant)
                 .POST("/commit", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::commitProject)
+                .GET("/auditList", projectInfoHandler::auditList)
                 .build();
         return RouterFunctions.route().path("/api/projectInfo", supplier).build();
     }
@@ -81,6 +83,14 @@ public class RouterFunctionConfiguration {
                 .GET("/list", projectTypeHandler::list)
                 .build();
         return RouterFunctions.route().path("/api/projectType", supplier).build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> adminLoginRouterFunction(AdminLoginHandler adminLoginHandler) {
+        Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
+                .POST("/filter", adminLoginHandler::adminLogin)
+                .build();
+        return RouterFunctions.route().path("/admin", supplier).build();
     }
 
     /**

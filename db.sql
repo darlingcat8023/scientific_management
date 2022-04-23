@@ -23,7 +23,7 @@ create table admin_user_account
     account        varchar(50)   default 0                 not null comment '用户账户',
     user_name      varchar(50)   default ''                not null comment '用户名',
     user_password  varchar(50)   default ''                not null comment '密码'
-) engine = InnoDB, comment = '用户信息表', charset = utf8;
+) engine = InnoDB, comment = '管理员信息表', charset = utf8;
 
 -- 初始化两个管理员
 insert into admin_user_account (account, user_name, user_password) values ('root1', '一级审核员', 'root1'),('root2', '二级审核员', 'root2');
@@ -91,7 +91,7 @@ create table project_audit_info (
     audit_result        tinyint(1)   default 0                 not null comment '审核结果 0 已拒绝 1 初始化 2 通过',
     audit_active        tinyint(1)   default 0                 not null comment '状态激活 0 未激活 1 已激活',
     audit_comment       varchar(500) default ''                not null comment '审核备注'
-) comment '项目审核信息表' charset = utf8;
+) engine = InnoDB, comment = '项目审核信息表', charset = utf8;
 
 -- 项目分类信息表
 create table project_type_info (

@@ -6,8 +6,12 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
 
-@Table(value = "project_audit_info")
-public record ProjectAuditInfoModel (
+/**
+ * @author xiaowenrou
+ * @date 4/23/22
+ */
+@Table(value = "admin_user_account")
+public record AdminUserAccountModel(
 
         @Id
         Integer id,
@@ -18,17 +22,10 @@ public record ProjectAuditInfoModel (
         @ReadOnlyProperty
         Timestamp updatedAt,
 
-        Integer projectId,
+        String account,
 
-        Integer auditUserId,
+        String userName,
 
-        String auditUserName,
-
-        Integer auditStep,
-
-        Integer auditResult,
-
-        Integer auditActive,
-
-        String auditComment
-) {}
+        String userPassword
+) {
+}

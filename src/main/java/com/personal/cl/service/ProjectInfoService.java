@@ -12,6 +12,7 @@ import com.personal.cl.model.request.ProjectCommitRequest;
 import com.personal.cl.model.request.ProjectCreateRequest;
 import com.personal.cl.model.request.ProjectListRequest;
 import com.personal.cl.model.request.ProjectUpdateRequest;
+import com.personal.cl.model.response.ProjectAuditListResponse;
 import com.personal.cl.model.response.ProjectListResponse;
 import com.personal.cl.wrapper.ProjectInfoRepoWrapper;
 import lombok.AllArgsConstructor;
@@ -76,6 +77,7 @@ public class ProjectInfoService {
                 .map(ProjectParticipantInfoModel::projectId).distinct().count());
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     public Mono<String> commitProject(Mono<ProjectCommitRequest> requestMono) {
         return requestMono.flatMap(request -> this.projectInfoRepository.findById(request.projectId())
                 .switchIfEmpty(Mono.error(new BusinessException("未查询到项目")))
@@ -90,8 +92,14 @@ public class ProjectInfoService {
                     ProjectAuditInfoModel step1 = new ProjectAuditInfoModel(null, null, null, project.id(), 1, "一级审核员", 1, null, 1, null);
                     ProjectAuditInfoModel step2 = new ProjectAuditInfoModel(null, null, null, project.id(), 2, "二级审核员", 2, null, 0, null);
                     return this.projectAuditInfoRepository.deleteByProjectId(project.id())
-                            .then(this.projectAuditInfoRepository.saveAll(Flux.just(step1, step2)).then());
+                            .then(this.projectAuditInfoRepository.saveAll(Flux.just(step1, step2))
+                                    .then(this.projectInfoRepository.updateProjectStatus(2, project.id())));
                 })).map(v -> "success");
+    }
+
+    public Flux<ProjectAuditListResponse> auditList(Integer projectId) {
+        return this.projectAuditInfoRepository.findProjectAuditInfoModelsByProjectIdOrderByAuditStepAsc(projectId)
+                .map(ProjectAuditListResponse::buildFromModel);
     }
 
 }

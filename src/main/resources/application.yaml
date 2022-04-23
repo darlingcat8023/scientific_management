@@ -14,5 +14,3 @@ spring:
       max-idle-time: 300m
       max-acquire-time: 3s
       max-create-connection-time: 5s
-
-
