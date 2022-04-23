@@ -2,7 +2,7 @@ package com.personal.cl.service.admin;
 
 import com.personal.cl.dao.AdminUserAccountRepository;
 import com.personal.cl.exception.BusinessException;
-import com.personal.cl.model.request.UserLoginRequest;
+import com.personal.cl.model.request.AdminLoginRequest;
 import com.personal.cl.model.response.AdminLoginResponse;
 import com.personal.cl.service.TokenService;
 import lombok.AllArgsConstructor;
@@ -21,8 +21,8 @@ public class AdminLoginService {
 
     private final TokenService tokenService;
 
-    public Mono<AdminLoginResponse> adminLogin(Mono<UserLoginRequest> requestMono) {
-        return requestMono.flatMap(request -> this.adminUserAccountRepository.findAdminUserAccountModelByAccountAndUserPassword(request.userMobile(), request.userPassword()))
+    public Mono<AdminLoginResponse> adminLogin(Mono<AdminLoginRequest> requestMono) {
+        return requestMono.flatMap(request -> this.adminUserAccountRepository.findAdminUserAccountModelByAccountAndUserPassword(request.account(), request.password()))
                 .switchIfEmpty(Mono.error(new BusinessException("用户名或密码错误")))
                 .flatMap(model -> this.tokenService.generateAdminToken(model).map(token -> AdminLoginResponse.build(model, token)));
     }

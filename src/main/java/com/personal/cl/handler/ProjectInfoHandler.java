@@ -5,7 +5,6 @@ import com.personal.cl.model.request.ProjectCommitRequest;
 import com.personal.cl.model.request.ProjectCreateRequest;
 import com.personal.cl.model.request.ProjectListRequest;
 import com.personal.cl.model.request.ProjectUpdateRequest;
-import com.personal.cl.model.response.ProjectAuditListResponse;
 import com.personal.cl.model.response.ProjectListResponse;
 import com.personal.cl.service.ProjectInfoService;
 import com.personal.cl.utils.ValidatorUtils;
@@ -81,12 +80,6 @@ public class ProjectInfoHandler {
     public Mono<ServerResponse> commitProject(ServerRequest serverRequest) {
         var requestMono = serverRequest.bodyToMono(ProjectCommitRequest.class).log();
         return ServerResponse.ok().body(this.projectInfoService.commitProject(requestMono), String.class);
-    }
-
-    public Mono<ServerResponse> auditList(ServerRequest serverRequest) {
-        var projectId = serverRequest.queryParam("projectId")
-                .map(Integer::parseInt).orElseThrow(() -> new BusinessException("没有项目id"));
-        return ServerResponse.ok().body(this.projectInfoService.auditList(projectId), ProjectAuditListResponse.class);
     }
 
 }

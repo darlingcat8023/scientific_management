@@ -53,7 +53,6 @@ public class RouterFunctionConfiguration {
                 .GET("/listByParticipant", projectInfoHandler::listProjectByParticipant)
                 .GET("/countByParticipant", projectInfoHandler::countProjectByParticipant)
                 .POST("/commit", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::commitProject)
-                .GET("/auditList", projectInfoHandler::auditList)
                 .build();
         return RouterFunctions.route().path("/api/projectInfo", supplier).build();
     }
@@ -77,6 +76,16 @@ public class RouterFunctionConfiguration {
     }
 
     @Bean
+    public RouterFunction<ServerResponse> projectAuditRouterFunction(ProjectAuditHandler projectAuditHandler) {
+        Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
+                .GET("/list", projectAuditHandler::listAuditProject)
+                .GET("/count", projectAuditHandler::countAuditProject)
+                .GET("/auditList", projectAuditHandler::auditList)
+                .build();
+        return RouterFunctions.route().path("/api/projectAudit", supplier).build();
+    }
+
+    @Bean
     public RouterFunction<ServerResponse> projectTypeRouterFunction(ProjectTypeHandler projectTypeHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
                 .GET("/filter", projectTypeHandler::filter)
@@ -88,7 +97,7 @@ public class RouterFunctionConfiguration {
     @Bean
     public RouterFunction<ServerResponse> adminLoginRouterFunction(AdminLoginHandler adminLoginHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
-                .POST("/filter", adminLoginHandler::adminLogin)
+                .POST("/login", adminLoginHandler::adminLogin)
                 .build();
         return RouterFunctions.route().path("/admin", supplier).build();
     }

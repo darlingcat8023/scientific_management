@@ -1,7 +1,7 @@
 package com.personal.cl.handler.admin;
 
 import com.personal.cl.model.RequestVerify;
-import com.personal.cl.model.request.UserLoginRequest;
+import com.personal.cl.model.request.AdminLoginRequest;
 import com.personal.cl.model.response.AdminLoginResponse;
 import com.personal.cl.service.admin.AdminLoginService;
 import com.personal.cl.utils.ValidatorUtils;
@@ -26,7 +26,7 @@ public class AdminLoginHandler {
     private final Validator validator;
 
     public Mono<ServerResponse> adminLogin(ServerRequest serverRequest) {
-        var requestMono = serverRequest.bodyToMono(UserLoginRequest.class).log()
+        var requestMono = serverRequest.bodyToMono(AdminLoginRequest.class).log()
                 .doOnNext(req -> ValidatorUtils.valid(this.validator, req, RequestVerify.UserLoginVerify.class));
         return ServerResponse.ok().body(this.adminLoginService.adminLogin(requestMono), AdminLoginResponse.class);
     }

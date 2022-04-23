@@ -3,7 +3,7 @@ package com.personal.cl.service;
 import com.personal.cl.dao.ProjectAuditInfoRepository;
 import com.personal.cl.dao.ProjectInfoRepository;
 import com.personal.cl.dao.model.ProjectAuditInfoModel;
-import com.personal.cl.model.request.ProjectListRequest;
+import com.personal.cl.model.response.ProjectAuditListResponse;
 import com.personal.cl.model.response.ProjectListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,16 +19,21 @@ public class ProjectAuditService {
 
     private final ProjectInfoRepository projectInfoRepository;
 
-    public Flux<ProjectListResponse> listAuditProject(Mono<ProjectListRequest> requestMono, Pageable pageable) {
-        return requestMono.flatMapMany(request -> this.projectAuditInfoRepository.findProjectAuditInfoModelsByAuditUserIdAndAuditActive(request.userId(), 1)
-                        .map(ProjectAuditInfoModel::projectId).distinct().collectList()
-                        .flatMapMany(collection -> this.projectInfoRepository.findAllByIdIn(collection, pageable)))
+    public Flux<ProjectListResponse> listAuditProject(Integer userId, Pageable pageable) {
+        return this.projectAuditInfoRepository.findProjectAuditInfoModelsByAuditUserIdAndAuditActive(userId, 1)
+                .map(ProjectAuditInfoModel::projectId).distinct().collectList()
+                .flatMapMany(collection -> this.projectInfoRepository.findAllByIdIn(collection, pageable))
                 .map(ProjectListResponse::buildFromModel);
     }
 
-    public Mono<Long> countAuditProject(Mono<ProjectListRequest> requestMono) {
-        return requestMono.flatMap(request -> this.projectAuditInfoRepository.findProjectAuditInfoModelsByAuditUserIdAndAuditActive(request.userId(), 1)
-                .map(ProjectAuditInfoModel::projectId).distinct().count());
+    public Mono<Long> countAuditProject(Integer userId) {
+        return this.projectAuditInfoRepository.findProjectAuditInfoModelsByAuditUserIdAndAuditActive(userId, 1)
+                .map(ProjectAuditInfoModel::projectId).distinct().count();
+    }
+
+    public Flux<ProjectAuditListResponse> auditList(Integer projectId) {
+        return this.projectAuditInfoRepository.findProjectAuditInfoModelsByProjectIdOrderByAuditStepAsc(projectId)
+                .map(ProjectAuditListResponse::buildFromModel);
     }
 
 }

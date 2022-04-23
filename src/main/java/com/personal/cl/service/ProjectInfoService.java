@@ -12,7 +12,6 @@ import com.personal.cl.model.request.ProjectCommitRequest;
 import com.personal.cl.model.request.ProjectCreateRequest;
 import com.personal.cl.model.request.ProjectListRequest;
 import com.personal.cl.model.request.ProjectUpdateRequest;
-import com.personal.cl.model.response.ProjectAuditListResponse;
 import com.personal.cl.model.response.ProjectListResponse;
 import com.personal.cl.wrapper.ProjectInfoRepoWrapper;
 import lombok.AllArgsConstructor;
@@ -95,11 +94,6 @@ public class ProjectInfoService {
                             .then(this.projectAuditInfoRepository.saveAll(Flux.just(step1, step2))
                                     .then(this.projectInfoRepository.updateProjectStatus(2, project.id())));
                 })).map(v -> "success");
-    }
-
-    public Flux<ProjectAuditListResponse> auditList(Integer projectId) {
-        return this.projectAuditInfoRepository.findProjectAuditInfoModelsByProjectIdOrderByAuditStepAsc(projectId)
-                .map(ProjectAuditListResponse::buildFromModel);
     }
 
 }
