@@ -81,6 +81,8 @@ public class RouterFunctionConfiguration {
                 .GET("/list", projectAuditHandler::listAuditProject)
                 .GET("/count", projectAuditHandler::countAuditProject)
                 .GET("/auditList", projectAuditHandler::auditList)
+                .POST("/pass", projectAuditHandler::pass)
+                .POST("/reject", projectAuditHandler::reject)
                 .build();
         return RouterFunctions.route().path("/api/projectAudit", supplier).build();
     }

@@ -18,4 +18,6 @@ public interface RequestVerify {
 
     interface ProjectCommitVerify{}
 
+    interface ProjectAuditVerify{}
+
 }

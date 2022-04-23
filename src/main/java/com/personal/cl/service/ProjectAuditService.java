@@ -3,11 +3,13 @@ package com.personal.cl.service;
 import com.personal.cl.dao.ProjectAuditInfoRepository;
 import com.personal.cl.dao.ProjectInfoRepository;
 import com.personal.cl.dao.model.ProjectAuditInfoModel;
+import com.personal.cl.dao.model.ProjectAuditRequest;
 import com.personal.cl.model.response.ProjectAuditListResponse;
 import com.personal.cl.model.response.ProjectListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,6 +36,16 @@ public class ProjectAuditService {
     public Flux<ProjectAuditListResponse> auditList(Integer projectId) {
         return this.projectAuditInfoRepository.findProjectAuditInfoModelsByProjectIdOrderByAuditStepAsc(projectId)
                 .map(ProjectAuditListResponse::buildFromModel);
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    public Mono<String> pass(Mono<ProjectAuditRequest> requestMono) {
+        return null;
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    public Mono<String> reject(Mono<ProjectAuditRequest> requestMono) {
+        return null;
     }
 
 }
