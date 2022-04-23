@@ -88,8 +88,8 @@ public class ProjectInfoService {
                         throw new BusinessException("超过最大限制");
                     }
                 }).flatMap(project -> {
-                    ProjectAuditInfoModel step1 = new ProjectAuditInfoModel(null, null, null, project.id(), 1, "一级审核员", 1, null, 1, null);
-                    ProjectAuditInfoModel step2 = new ProjectAuditInfoModel(null, null, null, project.id(), 2, "二级审核员", 2, null, 0, null);
+                    ProjectAuditInfoModel step1 = new ProjectAuditInfoModel(null, null, null, project.id(), 1, "一级审核员", 1, 1, 1, null);
+                    ProjectAuditInfoModel step2 = new ProjectAuditInfoModel(null, null, null, project.id(), 2, "二级审核员", 2, 1, 0, null);
                     return this.projectAuditInfoRepository.deleteByProjectId(project.id())
                             .then(this.projectAuditInfoRepository.saveAll(Flux.just(step1, step2))
                                     .then(this.projectInfoRepository.updateProjectStatus(2, project.id())));

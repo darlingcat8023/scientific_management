@@ -32,4 +32,13 @@ public interface ProjectInfoRepository extends R2dbcRepository<ProjectInfoModel,
     @Query(value = "update project_info set project_status = :status where id = :projectId ")
     Mono<Integer> updateProjectStatus(Integer status, Integer projectId);
 
+    /**
+     * 更新已拒绝次数
+     * @param projectId
+     * @return
+     */
+    @Modifying
+    @Query(value = "update project_info set project_rejects = project_rejects + 1 where id = :projectId ")
+    Mono<Integer> updateProjectRejects(Integer projectId);
+
 }

@@ -52,18 +52,33 @@ public class ProjectAuditService {
                             if (audit.auditStep().equals(2)) {
                                 return this.projectInfoRepository.updateProjectStatus(audit.projectId(), 3)
                                         .then(this.projectInfoRepository.findById(audit.projectId())
-                                                .flatMap(info -> this.projectTypeRepository.increaseCreatedProjects(info.projectType()))
+                                                .flatMap(info -> this.projectTypeRepository.increasePassedProjects(info.projectType()))
                                         );
                             } else {
                                 return Mono.empty();
                             }
                         })
-                )).map(x -> "success");
+                )
+        ).map(x -> "success");
     }
 
     @Transactional(rollbackFor = {Exception.class})
     public Mono<String> reject(Mono<ProjectAuditRequest> requestMono) {
-        return null;
+        return requestMono.flatMap(request -> this.projectAuditInfoRepository.findProjectAuditInfoModelByProjectIdAndAuditUserId(request.projectId(), request.auditUserId())
+                .switchIfEmpty(Mono.error(new BusinessException("数据不存在")))
+                .flatMap(audit -> this.projectAuditInfoRepository.updateReject(audit.id(), request.comment()))
+                .then(this.projectInfoRepository.updateProjectRejects(request.projectId()))
+                .flatMap(i -> this.projectInfoRepository.findById(request.projectId())
+                        .flatMap(info -> {
+                            if (info.projectRejects() > 2) {
+                                return this.projectInfoRepository.updateProjectStatus(0, info.id())
+                                        .then(this.projectTypeRepository.increaseRejectedProjects(info.projectType()));
+                            } else {
+                                return this.projectInfoRepository.updateProjectStatus(1, info.id());
+                            }
+                        })
+                )
+        ).map(x -> "success");
     }
 
 }
