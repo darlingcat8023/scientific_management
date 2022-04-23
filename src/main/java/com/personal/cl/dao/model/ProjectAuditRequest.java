@@ -12,7 +12,10 @@ import static com.personal.cl.model.RequestVerify.ProjectAuditVerify;
 public record ProjectAuditRequest(
 
         @NotNull(message = "审核id不能为空", groups = {ProjectAuditVerify.class})
-        Integer auditId,
+        Integer projectId,
+
+        @NotNull(message = "审核人不能为空", groups = {ProjectAuditVerify.class})
+        Integer auditUserId,
 
         @NotBlank(message = "备注不能为空", groups = {ProjectAuditVerify.class})
         String comment
