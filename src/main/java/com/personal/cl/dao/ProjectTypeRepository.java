@@ -19,5 +19,14 @@ public interface ProjectTypeRepository extends R2dbcRepository<ProjectTypeInfoMo
     @Query(value = "update project_type_info set created_projects = created_projects + 1 where type_name = :type ")
     Mono<Integer> increaseCreatedProjects(String type);
 
+    /**
+     * 已通过的项目数 + 1
+     * @param type
+     * @return
+     */
+    @Modifying
+    @Query(value = "update project_type_info set passed_projects = passed_projects + 1 where type_name = :type ")
+    Mono<Integer> increasePassedProjects(String type);
+
 
 }

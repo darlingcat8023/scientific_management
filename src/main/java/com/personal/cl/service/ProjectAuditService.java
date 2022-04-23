@@ -2,8 +2,10 @@ package com.personal.cl.service;
 
 import com.personal.cl.dao.ProjectAuditInfoRepository;
 import com.personal.cl.dao.ProjectInfoRepository;
+import com.personal.cl.dao.ProjectTypeRepository;
 import com.personal.cl.dao.model.ProjectAuditInfoModel;
 import com.personal.cl.dao.model.ProjectAuditRequest;
+import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.response.ProjectAuditListResponse;
 import com.personal.cl.model.response.ProjectListResponse;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,8 @@ public class ProjectAuditService {
     private final ProjectAuditInfoRepository projectAuditInfoRepository;
 
     private final ProjectInfoRepository projectInfoRepository;
+
+    private final ProjectTypeRepository projectTypeRepository;
 
     public Flux<ProjectListResponse> listAuditProject(Integer userId, Pageable pageable) {
         return this.projectAuditInfoRepository.findProjectAuditInfoModelsByAuditUserIdAndAuditActive(userId, 1)
@@ -40,7 +44,21 @@ public class ProjectAuditService {
 
     @Transactional(rollbackFor = {Exception.class})
     public Mono<String> pass(Mono<ProjectAuditRequest> requestMono) {
-        return null;
+        return requestMono.flatMap(request -> this.projectAuditInfoRepository.findById(request.auditId())
+                .switchIfEmpty(Mono.error(new BusinessException("数据不存在")))
+                .flatMap(audit -> this.projectAuditInfoRepository.updatePass(audit.id(), request.comment())
+                        .then(this.projectAuditInfoRepository.activeNext(audit.projectId()))
+                        .flatMap(i -> {
+                            if (audit.auditStep().equals(2)) {
+                                return this.projectInfoRepository.updateProjectStatus(audit.projectId(), 3)
+                                        .then(this.projectInfoRepository.findById(audit.projectId())
+                                                .flatMap(info -> this.projectTypeRepository.increaseCreatedProjects(info.projectType()))
+                                        );
+                            } else {
+                                return Mono.empty();
+                            }
+                        })
+                )).map(x -> "success");
     }
 
     @Transactional(rollbackFor = {Exception.class})
