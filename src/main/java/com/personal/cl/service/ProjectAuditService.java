@@ -45,7 +45,7 @@ public class ProjectAuditService {
     @Transactional(rollbackFor = {Exception.class})
     public Mono<String> pass(Mono<ProjectAuditRequest> requestMono) {
         return requestMono.flatMap(request -> this.projectAuditInfoRepository.findProjectAuditInfoModelByProjectIdAndAuditUserId(request.projectId(), request.auditUserId())
-                .switchIfEmpty(Mono.error(new BusinessException("数据不存在")))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BusinessException("数据不存在"))))
                 .flatMap(audit -> this.projectAuditInfoRepository.updatePass(audit.id(), request.comment())
                         .then(this.projectAuditInfoRepository.activeNext(audit.projectId()))
                         .flatMap(i -> {
@@ -65,7 +65,7 @@ public class ProjectAuditService {
     @Transactional(rollbackFor = {Exception.class})
     public Mono<String> reject(Mono<ProjectAuditRequest> requestMono) {
         return requestMono.flatMap(request -> this.projectAuditInfoRepository.findProjectAuditInfoModelByProjectIdAndAuditUserId(request.projectId(), request.auditUserId())
-                .switchIfEmpty(Mono.error(new BusinessException("数据不存在")))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BusinessException("数据不存在"))))
                 .flatMap(audit -> this.projectAuditInfoRepository.updateReject(audit.id(), request.comment()))
                 .then(this.projectInfoRepository.updateProjectRejects(request.projectId()))
                 .flatMap(i -> this.projectInfoRepository.findById(request.projectId())

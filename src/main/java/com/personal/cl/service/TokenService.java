@@ -64,7 +64,7 @@ public class TokenService {
         var userName = body.get("userName", String.class);
         var isAdmin = body.get("isAdmin", Integer.class);
         return this.tokenInfoRepository.queryTokenInfoModelByToken(token)
-                .switchIfEmpty(Mono.error(new BusinessException("token无效")))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BusinessException("token无效"))))
                 .flatMap(model -> {
                     if (!isAdmin.equals(admin)) {
                        return Mono.error(new BusinessException("无权限"));

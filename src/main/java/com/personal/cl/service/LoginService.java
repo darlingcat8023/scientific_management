@@ -25,7 +25,7 @@ public class LoginService {
     @Transactional(rollbackFor = {Exception.class})
     public Mono<UserLoginResponse> userLogin(Mono<UserLoginRequest> requestMono) {
         return requestMono.flatMap(request -> this.userAccountRepository.findUserAccountModelByUserMobileAndUserPassword(request.userMobile(), request.userPassword()))
-                .switchIfEmpty(Mono.error(new BusinessException("用户名或密码错误")))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BusinessException("用户名或密码错误"))))
                 .flatMap(model -> this.tokenService.generateUserToken(model).map(token -> UserLoginResponse.build(model, token)));
     }
 

@@ -26,7 +26,7 @@ public class ProjectParticipantService {
     @Transactional(rollbackFor = {Exception.class})
     public Mono<String> addProjectParticipant(Integer projectId, Flux<ProjectParticipantAddRequest> requestFlux) {
         return this.projectInfoRepository.findById(projectId)
-                .switchIfEmpty(Mono.error(new BusinessException("项目id不存在")))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BusinessException("项目不存在"))))
                 .doOnNext(project -> {
                     if (!project.projectStatus().equals(1)) {
                         throw new BusinessException("当前状态不允许修改");

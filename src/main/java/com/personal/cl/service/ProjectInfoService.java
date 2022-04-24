@@ -45,7 +45,7 @@ public class ProjectInfoService {
 
     public Mono<Integer> updateProject(Mono<ProjectUpdateRequest> requestMono) {
         return requestMono.flatMap(request -> this.projectInfoRepository.findById(request.id())
-                        .switchIfEmpty(Mono.error(new BusinessException("未查询到数据")))
+                        .switchIfEmpty(Mono.defer(() -> Mono.error(new BusinessException("未查询到数据"))))
                         .doOnNext(project -> {
                             if (!project.projectStatus().equals(1)) {
                                 throw new BusinessException("当前状态不允许修改");
@@ -79,7 +79,7 @@ public class ProjectInfoService {
     @Transactional(rollbackFor = {Exception.class})
     public Mono<String> commitProject(Mono<ProjectCommitRequest> requestMono) {
         return requestMono.flatMap(request -> this.projectInfoRepository.findById(request.projectId())
-                .switchIfEmpty(Mono.error(new BusinessException("未查询到项目")))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BusinessException("未查询到项目"))))
                 .doOnNext(projectInfoModel -> {
                     if (projectInfoModel.projectStatus() != 1) {
                         throw new BusinessException("当前状态不允许提交");

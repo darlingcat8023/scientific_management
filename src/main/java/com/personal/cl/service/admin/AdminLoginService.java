@@ -23,7 +23,7 @@ public class AdminLoginService {
 
     public Mono<AdminLoginResponse> adminLogin(Mono<AdminLoginRequest> requestMono) {
         return requestMono.flatMap(request -> this.adminUserAccountRepository.findAdminUserAccountModelByAccountAndUserPassword(request.account(), request.password()))
-                .switchIfEmpty(Mono.error(new BusinessException("用户名或密码错误")))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BusinessException("用户名或密码错误"))))
                 .flatMap(model -> this.tokenService.generateAdminToken(model).map(token -> AdminLoginResponse.build(model, token)));
     }
 
