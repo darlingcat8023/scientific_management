@@ -50,7 +50,7 @@ public class ProjectAuditService {
                         .then(this.projectAuditInfoRepository.activeNext(audit.projectId()))
                         .flatMap(i -> {
                             if (audit.auditStep().equals(2)) {
-                                return this.projectInfoRepository.updateProjectStatus(audit.projectId(), 3)
+                                return this.projectInfoRepository.updateProjectStatus(3, audit.projectId())
                                         .then(this.projectInfoRepository.findById(audit.projectId())
                                                 .flatMap(info -> this.projectTypeRepository.increasePassedProjects(info.projectType()))
                                         );
