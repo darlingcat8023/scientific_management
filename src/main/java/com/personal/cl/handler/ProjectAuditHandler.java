@@ -1,5 +1,6 @@
 package com.personal.cl.handler;
 
+import com.personal.cl.aspect.TokenCheck;
 import com.personal.cl.dao.model.ProjectAuditRequest;
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.response.ProjectAuditListResponse;
@@ -23,6 +24,7 @@ import static com.personal.cl.model.RequestVerify.ProjectAuditVerify;
  */
 @Controller
 @AllArgsConstructor
+@TokenCheck(value = TokenCheck.TokenType.ADMIN)
 public class ProjectAuditHandler {
 
     private final ProjectAuditService projectAuditService;

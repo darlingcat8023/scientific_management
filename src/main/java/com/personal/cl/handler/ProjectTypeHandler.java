@@ -1,5 +1,6 @@
 package com.personal.cl.handler;
 
+import com.personal.cl.aspect.TokenCheck;
 import com.personal.cl.model.response.ProjectStatisticListResponse;
 import com.personal.cl.model.response.ProjectTypeFilterResponse;
 import com.personal.cl.service.ProjectTypeService;
@@ -19,6 +20,7 @@ public class ProjectTypeHandler {
         return ServerResponse.ok().body(this.projectTypeService.filterProjectType(), ProjectTypeFilterResponse.class);
     }
 
+    @TokenCheck(value = TokenCheck.TokenType.ADMIN)
     public Mono<ServerResponse> list(ServerRequest serverRequest) {
         return ServerResponse.ok().body(this.projectTypeService.listProjectStatistic(), ProjectStatisticListResponse.class);
     }

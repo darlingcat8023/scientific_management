@@ -1,5 +1,6 @@
 package com.personal.cl.handler;
 
+import com.personal.cl.aspect.TokenCheck;
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.request.ProjectParticipantAddRequest;
 import com.personal.cl.model.response.ProjectParticipantListResponse;
@@ -27,6 +28,7 @@ public class ProjectParticipantHandler {
 
     private final Validator validator;
 
+    @TokenCheck(value = TokenCheck.TokenType.USER)
     public Mono<ServerResponse> addProjectParticipant(ServerRequest serverRequest) {
         var projectId = serverRequest.queryParam("projectId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("项目id不能为空"));
         var requestFlux = serverRequest.bodyToFlux(ProjectParticipantAddRequest.class).log()

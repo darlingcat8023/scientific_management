@@ -1,5 +1,6 @@
 package com.personal.cl.handler;
 
+import com.personal.cl.aspect.TokenCheck;
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.request.ProjectCommitRequest;
 import com.personal.cl.model.request.ProjectCreateRequest;
@@ -27,6 +28,7 @@ import static com.personal.cl.model.RequestVerify.ProjectUpdateVerify;
  */
 @Controller
 @AllArgsConstructor
+@TokenCheck(value = TokenCheck.TokenType.USER)
 public class ProjectInfoHandler {
 
     private final ProjectInfoService projectInfoService;

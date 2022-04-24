@@ -1,5 +1,6 @@
 package com.personal.cl.handler;
 
+import com.personal.cl.aspect.TokenCheck;
 import com.personal.cl.exception.BusinessException;
 import com.personal.cl.model.response.UserDetailResponse;
 import com.personal.cl.model.response.UserFilterResponse;
@@ -26,11 +27,13 @@ public class UserAccountHandler {
         return ServerResponse.ok().body(this.userAccountService.filterUser(userType), UserFilterResponse.class);
     }
 
+    @TokenCheck(value = TokenCheck.TokenType.ADMIN)
     public Mono<ServerResponse> detail(ServerRequest serverRequest) {
         var userId = serverRequest.queryParam("userId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("用户id不能为空"));
         return ServerResponse.ok().body(this.userAccountService.detailUser(userId), UserDetailResponse.class);
     }
 
+    @TokenCheck(value = TokenCheck.TokenType.USER)
     public Mono<ServerResponse> securityDetail(ServerRequest serverRequest) {
         var userId = serverRequest.queryParam("userId").map(Integer::parseInt).orElseThrow(() -> new BusinessException("用户id不能为空"));
         return ServerResponse.ok().body(this.userAccountService.securityDetailUser(userId), UserSecurityDetailResponse.class);
