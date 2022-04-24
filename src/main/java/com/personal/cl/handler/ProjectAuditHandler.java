@@ -32,7 +32,8 @@ public class ProjectAuditHandler {
     public Mono<ServerResponse> listAuditProject(ServerRequest serverRequest) {
         var userId = serverRequest.queryParam("userId")
                 .map(Integer::parseInt).orElseThrow(() -> new BusinessException("没有用户id"));
-        var page = serverRequest.queryParam("page").map(Integer::parseInt).orElse(1);
+        var page = serverRequest.queryParam("page")
+                .map(Integer::parseInt).orElse(1);
         return ServerResponse.ok().body(this.projectAuditService.listAuditProject(userId, PageRequest.of(page - 1, 10)), ProjectListResponse.class);
     }
 

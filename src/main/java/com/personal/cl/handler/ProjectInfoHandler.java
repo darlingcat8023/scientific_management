@@ -46,7 +46,8 @@ public class ProjectInfoHandler {
     }
 
     public Mono<ServerResponse> listProjectByCreator(ServerRequest serverRequest) {
-        var page = serverRequest.queryParam("page").map(Integer::parseInt).orElse(1);
+        var page = serverRequest.queryParam("page")
+                .map(Integer::parseInt).orElse(1);
         return ServerResponse.ok().body(this.projectInfoService.listByCreator(this.buildRequestMono(serverRequest), PageRequest.of(page - 1, 10)), ProjectListResponse.class);
     }
 
@@ -55,7 +56,8 @@ public class ProjectInfoHandler {
     }
 
     public Mono<ServerResponse> listProjectByParticipant(ServerRequest serverRequest) {
-        var page = serverRequest.queryParam("page").map(Integer::parseInt).orElse(1);
+        var page = serverRequest.queryParam("page")
+                .map(Integer::parseInt).orElse(1);
         return ServerResponse.ok().body(this.projectInfoService.listByParticipant(this.buildRequestMono(serverRequest), PageRequest.of(page - 1, 10)), ProjectListResponse.class);
     }
 
