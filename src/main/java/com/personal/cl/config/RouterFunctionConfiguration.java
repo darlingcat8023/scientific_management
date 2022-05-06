@@ -17,6 +17,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
 /**
  * @author xiaowenrou
  * @date 3/30/22
@@ -27,8 +29,8 @@ public class RouterFunctionConfiguration {
     @Bean
     public RouterFunction<ServerResponse> loginRouterFunction(LoginHandler loginHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
-                .POST("/login", RequestPredicates.contentType(MediaType.APPLICATION_JSON), loginHandler::login)
-                .POST("/register", RequestPredicates.contentType(MediaType.APPLICATION_JSON), loginHandler::register)
+                .POST("/login", RequestPredicates.contentType(APPLICATION_JSON), loginHandler::login)
+                .POST("/register", RequestPredicates.contentType(APPLICATION_JSON), loginHandler::register)
                 .build();
         return RouterFunctions.route().path("/api", supplier).build();
     }
@@ -46,13 +48,13 @@ public class RouterFunctionConfiguration {
     @Bean
     public RouterFunction<ServerResponse> projectRouterFunction(ProjectInfoHandler projectInfoHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
-                .POST("/create", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::createProject)
-                .POST("/update", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::updateProject)
+                .POST("/create", RequestPredicates.contentType(APPLICATION_JSON), projectInfoHandler::createProject)
+                .POST("/update", RequestPredicates.contentType(APPLICATION_JSON), projectInfoHandler::updateProject)
                 .GET("/listByCreator", projectInfoHandler::listProjectByCreator)
                 .GET("/countByCreator", projectInfoHandler::countProjectByCreator)
                 .GET("/listByParticipant", projectInfoHandler::listProjectByParticipant)
                 .GET("/countByParticipant", projectInfoHandler::countProjectByParticipant)
-                .POST("/commit", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectInfoHandler::commitProject)
+                .POST("/commit", RequestPredicates.contentType(APPLICATION_JSON), projectInfoHandler::commitProject)
                 .build();
         return RouterFunctions.route().path("/api/projectInfo", supplier).build();
     }
@@ -60,7 +62,7 @@ public class RouterFunctionConfiguration {
     @Bean
     public RouterFunction<ServerResponse> projectParticipantRouterFunction(ProjectParticipantHandler projectParticipantHandler) {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
-                .POST("/add", RequestPredicates.contentType(MediaType.APPLICATION_JSON), projectParticipantHandler::addProjectParticipant)
+                .POST("/add", RequestPredicates.contentType(APPLICATION_JSON), projectParticipantHandler::addProjectParticipant)
                 .GET("/list", projectParticipantHandler::listProjectParticipant)
                 .build();
         return RouterFunctions.route().path("/api/projectParticipant", supplier).build();
