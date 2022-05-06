@@ -101,7 +101,7 @@ public class RouterFunctionConfiguration {
         Supplier<RouterFunction<ServerResponse>> supplier = () -> RouterFunctions.route()
                 .POST("/login", adminLoginHandler::adminLogin)
                 .build();
-        return RouterFunctions.route().path("/admin", supplier).build();
+        return RouterFunctions.route().path("/api/admin", supplier).build();
     }
 
     /**

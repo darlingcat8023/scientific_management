@@ -4,14 +4,11 @@ import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.RecordComponent;
-import java.util.Map;
+import java.util.Arrays;
 
 /**
  * @author liujiajun
@@ -55,14 +52,22 @@ public class TestApplication {
     }
 
     @Test
-    public void tokenTest() {
-        Map<String, Object> tokenMap = Map.of("userId",1, "userName","name");
-        String token = Jwts.builder().setSubject("user")
-                .setClaims(tokenMap)
-                .signWith(SignatureAlgorithm.HS256, "user").compact();
-        System.out.println(token);
-        Claims user = Jwts.parser().setSigningKey("user").parseClaimsJws(token).getBody();
-        System.out.println(user.get("userId"));
+    public void codeTest() {
+        System.out.println(Arrays.toString(this.sortArrayByParity(new int[]{0,2})));
+    }
+
+    public int[] sortArrayByParity(int[] nums) {
+        int len = nums.length, l = 0, r = len - 1;
+        while (l < r) {
+            while (l < len && nums[l] % 2 == 0) l++;
+            while (r > -1 && nums[r] % 2 != 0) r--;
+            if (l < r) {
+                int t = nums[l];
+                nums[l++] = nums[r];
+                nums[r--] = t;
+            }
+        }
+        return nums;
     }
 
 }
