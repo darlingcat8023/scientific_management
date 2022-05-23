@@ -24,6 +24,12 @@ public record ProjectInfoModel (
 
         String researchDirection,
 
+        String projectLevel,
+
+        String projectSource,
+
+        String projectPriority,
+
         Integer projectFund,
 
         String projectRemark,

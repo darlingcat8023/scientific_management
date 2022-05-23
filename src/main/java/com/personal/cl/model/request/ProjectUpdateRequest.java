@@ -22,6 +22,15 @@ public record ProjectUpdateRequest (
         @NotBlank(message = "研究方向不能为空", groups = {ProjectUpdateVerify.class})
         String researchDirection,
 
+        @NotBlank(message = "项目等级不能为空", groups = {ProjectUpdateVerify.class})
+        String projectLevel,
+
+        @NotBlank(message = "项目来源不能为空", groups = {ProjectUpdateVerify.class})
+        String projectSource,
+
+        @NotBlank(message = "项目等级不能为空", groups = {ProjectUpdateVerify.class})
+        String projectPriority,
+
         @NotNull(message = "项目预算不能为空", groups = {ProjectUpdateVerify.class})
         Integer projectFund,
 
@@ -36,6 +45,9 @@ public record ProjectUpdateRequest (
                         this.projectName,
                         model.projectType(),
                         this.researchDirection,
+                        this.projectLevel,
+                        this.projectSource,
+                        this.projectPriority,
                         this.projectFund,
                         this.projectRemark,
                         model.projectStatus(),
