@@ -38,7 +38,7 @@ public record ProjectListResponse (
                 model.projectFund(),
                 model.projectRemark(),
                 model.projectStatus(),
-                model.projectRejects() == 3,
+                model.projectRejects() < 3,
                 model.creator()
         );
     }
